@@ -1,9 +1,7 @@
 using hackweek_backend.Data;
-using hackweek_backend.dtos;
+using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
-using System.Data;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace hackweek_backend.Services
 {

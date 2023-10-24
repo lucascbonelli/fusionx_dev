@@ -1,4 +1,5 @@
 ﻿using hackweek_backend.Data;
+using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 
@@ -18,9 +19,14 @@ namespace hackweek_backend.Services
             return await _context.Events.ToListAsync();
         }
 
-        public async Task<Event> GetEventByIdAsync(uint id)
+        public async Task<EventDto?> GetEventByIdAsync(uint id)
         {
-            return await _context.Events.FindAsync(id);
+            var modelEvent = await _context.Events.FindAsync(id);
+            if (modelEvent is null)
+            {
+                return null;
+            }
+            return new EventDto(modelEvent);
         }
 
         public async Task<Event> CreateEventAsync(Event eventItem)

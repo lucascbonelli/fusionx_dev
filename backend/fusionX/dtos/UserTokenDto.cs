@@ -1,6 +1,6 @@
 ﻿using hackweek_backend.Models;
 
-namespace hackweek_backend.dtos
+namespace hackweek_backend.Dtos
 {
     public class UserTokenDto
     {
@@ -16,7 +16,7 @@ namespace hackweek_backend.dtos
             if (model != null)
             {
                 UserId = model.UserId;
-                User = new UserDto(model.User);
+                User = (model.User == null) ? null : new UserDto(model.User);
                 Email = model.Email;
                 Token = model.Token;
                 ExpirationDate = model.ExpirationDate;

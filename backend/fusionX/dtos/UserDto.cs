@@ -1,6 +1,6 @@
 using hackweek_backend.Models;
 
-namespace hackweek_backend.dtos
+namespace hackweek_backend.Dtos
 {
     public class UserDto
     {
