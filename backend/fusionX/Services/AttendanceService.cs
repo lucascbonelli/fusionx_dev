@@ -43,6 +43,7 @@ namespace hackweek_backend.Services
             }
 
             attendance.Status = request.Status;
+            attendance.LectureId = request.LectureId;
 
             await _context.SaveChangesAsync();
         }

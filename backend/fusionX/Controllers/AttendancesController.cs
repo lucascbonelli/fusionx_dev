@@ -3,9 +3,6 @@ using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace hackweek_backend.Controllers
 {
@@ -27,7 +24,7 @@ namespace hackweek_backend.Controllers
             var attendance = await _service.GetAttendanceById(id);
             if (attendance == null)
             {
-                return NotFound("Attendance not found!");
+                return NotFound("Inscrição não encontrada!");
             }
 
             return Ok(attendance);
@@ -40,7 +37,7 @@ namespace hackweek_backend.Controllers
             try
             {
                 await _service.CreateAttendance(request);
-                return Ok("Attendance created successfully!");
+                return Ok("Inscrição efetuada com sucesso!");
             }
             catch (Exception e)
             {
@@ -55,7 +52,7 @@ namespace hackweek_backend.Controllers
             try
             {
                 await _service.UpdateAttendance(id, request);
-                return Ok("Attendance updated successfully!");
+                return Ok("Status da inscrição atualizado com sucesso.");
             }
             catch (Exception e)
             {
