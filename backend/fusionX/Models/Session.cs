@@ -12,6 +12,6 @@
         public uint? LocationId { get; set; }
         public Location? Location { get; set; }
 
-        public ICollection<Lecture>? Sessions { get; set; }
+        public ICollection<Lecture>? Lectures { get; set; }
     }
 }

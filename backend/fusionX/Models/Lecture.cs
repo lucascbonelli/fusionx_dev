@@ -8,7 +8,7 @@
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public uint EventDayId { get; set; }
-        public Session? EventDay { get; set; }
+        public uint SessionId { get; set; }
+        public Session? Session { get; set; }
     }
 }

@@ -11,11 +11,11 @@ namespace hackweek_backend.Data
         public DbSet<EventImage> EventImages { get; set; }
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        public DbSet<Lecture> Sessions { get; set; }
+        public DbSet<Lecture> Lectures { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
-        public DbSet<Session> EventDays { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserTag> UserTags { get; set; }
@@ -69,8 +69,8 @@ namespace hackweek_backend.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Lecture>()
-                .HasOne(s => s.EventDay).WithMany(e => e.Sessions)
-                .HasForeignKey(s => s.EventDayId)
+                .HasOne(s => s.Session).WithMany(s => s.Lectures)
+                .HasForeignKey(s => s.SessionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Notification>()
@@ -79,13 +79,13 @@ namespace hackweek_backend.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Session>()
-                .HasOne(ed => ed.Event).WithMany(e => e.EventDays)
-                .HasForeignKey(ed => ed.EventId)
+                .HasOne(s => s.Event).WithMany(e => e.Sessions)
+                .HasForeignKey(s => s.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Session>()
-                .HasOne(ed => ed.Location).WithMany()
-                .HasForeignKey(ed => ed.LocationId)
+                .HasOne(s => s.Location).WithMany()
+                .HasForeignKey(s => s.LocationId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<User>()
