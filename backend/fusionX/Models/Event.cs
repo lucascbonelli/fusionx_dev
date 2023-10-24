@@ -13,13 +13,13 @@
         public User? User { get; set; }
 
         public ICollection<EventTag>? Tags { get; set; }
-        public ICollection<EventDay>? EventDays { get; set; }
+        public ICollection<Session>? Sessions { get; set; }
         public ICollection<EventImage>? EventImages { get; set; }
 
         public Event()
         {
             Tags = new List<EventTag>();
-            EventDays = new List<EventDay>();
+            Sessions = new List<Session>();
             EventImages = new List<EventImage>();
         }
     }
