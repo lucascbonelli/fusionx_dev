@@ -15,7 +15,7 @@ namespace hackweek_backend.dtos
         public UserDto? UserDto { get; set; }
 
         public ICollection<EventTag>? Tags { get; set; } = new List<EventTag>();
-        public ICollection<EventDay>? EventDays { get; set; } = new List<EventDay>();
+        public ICollection<Session>? Sessions { get; set; } = new List<Session>();
         public ICollection<EventImage>? EventImages { get; set; } = new List<EventImage>();
 
         public EventDto(Event @event)
@@ -31,7 +31,7 @@ namespace hackweek_backend.dtos
                 UserId = @event.UserId;
                 UserDto = new UserDto(@event.User);
                 Tags = @event.Tags;
-                EventDays = @event.EventDays;
+                Sessions = @event.Sessions;
                 EventImages = @event.EventImages;
             }
         }
