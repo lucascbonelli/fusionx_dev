@@ -38,7 +38,7 @@ namespace hackweek_backend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var createdTag = await _service.CreateTagAsync(tagDto);
             return CreatedAtAction(nameof(GetTagById),new { id = createdTag.Id },createdTag);
@@ -58,6 +58,11 @@ namespace hackweek_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTag(uint id)
         {
+            var tag = await _service.GetTagByIdAsync(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
             await _service.DeleteTagAsync(id);
             return NoContent();
         }
