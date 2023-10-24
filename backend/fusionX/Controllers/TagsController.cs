@@ -1,4 +1,4 @@
-﻿using hackweek_backend.dtos;
+﻿using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +34,7 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTag(TagCreateDto tagDto)
+        public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
             if (!ModelState.IsValid)
             {

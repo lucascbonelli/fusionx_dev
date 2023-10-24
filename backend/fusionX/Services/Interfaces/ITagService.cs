@@ -1,4 +1,4 @@
-﻿using hackweek_backend.dtos;
+﻿using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 
 namespace hackweek_backend.Services.Interfaces
@@ -7,7 +7,7 @@ namespace hackweek_backend.Services.Interfaces
     {
         Task<IEnumerable<Tag>> GetAllTagsAsync();
         Task<Tag?> GetTagByIdAsync(uint id);
-        Task<Tag> CreateTagAsync(TagCreateDto tagDto);
+        Task<Tag> CreateTagAsync(TagDtoCreate tagDto);
         Task UpdateTagAsync(Tag tag);
         Task DeleteTagAsync(uint id);
     }
