@@ -58,6 +58,7 @@ builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IUserTokenService,UserTokenService>();
 builder.Services.AddScoped<IEventService,EventService>();
 builder.Services.AddScoped<ITagService,TagService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
