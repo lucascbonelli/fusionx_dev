@@ -3,12 +3,15 @@
     public class Session
     {
         public uint Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public DateTime BeginDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime Date { get; set; }
+        public int Capacity { get; set; }
 
-        public uint EventDayId { get; set; }
-        public EventDay? EventDay { get; set; }
+        public uint EventId { get; set; }
+        public Event? Event { get; set; }
+
+        public uint? LocationId { get; set; }
+        public Location? Location { get; set; }
+
+        public ICollection<Lecture>? Sessions { get; set; }
     }
 }
