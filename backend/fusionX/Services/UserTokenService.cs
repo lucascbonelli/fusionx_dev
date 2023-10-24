@@ -22,7 +22,7 @@ namespace hackweek_backend.Services
         {
             var userToken = await _context.UserTokens.FirstOrDefaultAsync(u => u.Email == email);
             var user = await _userService.GetUserByEmail(email) ?? throw new Exception($"Email não encontrado! ({email})");
-            var token = string.Empty;
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
 
             if (userToken == null)
