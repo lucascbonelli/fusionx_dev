@@ -2,7 +2,7 @@
 
 namespace hackweek_backend.Dtos
 {
-    public class TagCreateDto
+    public class TagDtoCreate
     {
         [Required(ErrorMessage = "A descrição é obrigatória.")]
         [StringLength(100,ErrorMessage = "A descrição não pode exceder 100 caracteres.")]
