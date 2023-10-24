@@ -1,4 +1,5 @@
 ﻿using hackweek_backend.Data;
+using hackweek_backend.dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 
@@ -23,8 +24,12 @@ namespace hackweek_backend.Services
             return await _context.Tags.FindAsync(id);
         }
 
-        public async Task<Tag> CreateTagAsync(Tag tag)
+        public async Task<Tag> CreateTagAsync(TagCreateDto tagDto)
         {
+            var tag = new Tag
+            {
+                Description = tagDto.Description,
+            };
             _context.Tags.Add(tag);
             await _context.SaveChangesAsync();
             return tag;
