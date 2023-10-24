@@ -67,7 +67,7 @@ namespace hackweek_backend.Controllers
             try
             {
                 await _service.DeleteAttendance(id);
-                return Ok("Attendance deleted successfully!");
+                return Ok("Inscrição removida com sucesso!");
             }
             catch (Exception e)
             {
