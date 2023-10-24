@@ -29,7 +29,7 @@ namespace hackweek_backend.Dtos
                 EndDate = @event.EndDate;
                 BannerImage = @event.BannerImage;
                 UserId = @event.UserId;
-                UserDto = new UserDto(@event.User);
+                UserDto = (@event.User == null) ? null : new UserDto(@event.User);
                 Tags = @event.Tags;
                 Sessions = @event.Sessions;
                 EventImages = @event.EventImages;

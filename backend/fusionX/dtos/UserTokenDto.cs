@@ -11,16 +11,13 @@ namespace hackweek_backend.Dtos
         public string Token { get; set; } = string.Empty;
         public DateTime ExpirationDate { get; set; }
 
-        public UserTokenDto(UserToken? model)
+        public UserTokenDto(UserToken model)
         {
-            if (model != null)
-            {
-                UserId = model.UserId;
-                User = (model.User == null) ? null : new UserDto(model.User);
-                Email = model.Email;
-                Token = model.Token;
-                ExpirationDate = model.ExpirationDate;
-            }
+            UserId = model.UserId;
+            User = (model.User == null) ? null : new UserDto(model.User);
+            Email = model.Email;
+            Token = model.Token;
+            ExpirationDate = model.ExpirationDate;
         }
     }
 }
