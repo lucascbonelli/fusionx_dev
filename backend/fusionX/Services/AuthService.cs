@@ -1,5 +1,5 @@
 ﻿using hackweek_backend.Data;
-using hackweek_backend.dtos;
+using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
@@ -52,24 +52,6 @@ namespace hackweek_backend.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public async Task ConfirmEmail(string token)
-        {
-            var tokenModel = await _context.UserTokens.Where(t => t.Token == token).FirstOrDefaultAsync() ?? throw new Exception($"Chave não encontrada! ({token})");
-
-            if (DateTime.Now > tokenModel.ExpirationDate) throw new Exception("Link de acesso expirou!");
-
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == tokenModel.UserId) ?? throw new Exception($"Usuário não encontrado! ({tokenModel.UserId})");
-
-            user.IsEmailConfirmed = true;
-            _context.UserTokens.Remove(tokenModel);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<string> Recovery(string email)
-        {
-            return "Email de redefinição enviado com sucesso!";
         }
 
         private static UserDto? GetCurrentUser(HttpContext httpContext)
