@@ -34,7 +34,7 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTag(TagCreateDto tagDto)
+        public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
             if (!ModelState.IsValid)
             {
