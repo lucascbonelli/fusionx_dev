@@ -8,10 +8,10 @@ namespace hackweek_backend.Data
 
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventDay> EventDays { get; set; }
         public DbSet<EventImage> EventImages { get; set; }
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Lecture> Lectures { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
@@ -39,16 +39,6 @@ namespace hackweek_backend.Data
                 .HasOne(e => e.User).WithMany()
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<EventDay>()
-                .HasOne(ed => ed.Event).WithMany(e => e.EventDays)
-                .HasForeignKey(ed => ed.EventId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<EventDay>()
-                .HasOne(ed => ed.Location).WithMany()
-                .HasForeignKey(ed => ed.LocationId)
-                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<EventImage>()
                 .HasOne(ei => ei.Event).WithMany(e => e.EventImages)
@@ -78,15 +68,25 @@ namespace hackweek_backend.Data
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Lecture>()
+                .HasOne(s => s.Session).WithMany(s => s.Lectures)
+                .HasForeignKey(s => s.SessionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.Event).WithMany()
                 .HasForeignKey(n => n.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Session>()
-                .HasOne(s => s.EventDay).WithMany(e => e.Sessions)
-                .HasForeignKey(s => s.EventDayId)
+                .HasOne(s => s.Event).WithMany(e => e.Sessions)
+                .HasForeignKey(s => s.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Session>()
+                .HasOne(s => s.Location).WithMany()
+                .HasForeignKey(s => s.LocationId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
