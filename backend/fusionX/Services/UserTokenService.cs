@@ -1,9 +1,7 @@
 using hackweek_backend.Data;
-using hackweek_backend.dtos;
+using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
-using System.Data;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace hackweek_backend.Services
 {
@@ -24,7 +22,7 @@ namespace hackweek_backend.Services
         {
             var userToken = await _context.UserTokens.FirstOrDefaultAsync(u => u.Email == email);
             var user = await _userService.GetUserByEmail(email) ?? throw new Exception($"Email não encontrado! ({email})");
-            var token = string.Empty;
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
 
             if (userToken == null)

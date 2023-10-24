@@ -1,4 +1,4 @@
-using hackweek_backend.dtos;
+using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -8,11 +8,11 @@ namespace hackweek_backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _service;
 
-        public UserController(IUserService service)
+        public UsersController(IUserService service)
         {
             _service = service;
         }

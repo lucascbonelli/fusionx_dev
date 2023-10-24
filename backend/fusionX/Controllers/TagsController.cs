@@ -1,4 +1,4 @@
-﻿using hackweek_backend.dtos;
+﻿using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
