@@ -1,4 +1,5 @@
-﻿using hackweek_backend.Models;
+﻿using hackweek_backend.dtos;
+using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,9 +34,13 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTag(Tag tag)
+        public async Task<IActionResult> CreateTag(TagCreateDto tagDto)
         {
-            var createdTag = await _service.CreateTagAsync(tag);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdTag = await _service.CreateTagAsync(tagDto);
             return CreatedAtAction(nameof(GetTagById),new { id = createdTag.Id },createdTag);
         }
 
@@ -53,6 +58,11 @@ namespace hackweek_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTag(uint id)
         {
+            var tag = await _service.GetTagByIdAsync(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
             await _service.DeleteTagAsync(id);
             return NoContent();
         }
