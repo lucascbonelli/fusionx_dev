@@ -27,7 +27,7 @@ namespace hackweek_backend.Data
 
             modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.EventDay).WithMany()
-                .HasForeignKey(a => a.EventDayId)
+                .HasForeignKey(a => a.LectureId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Attendance>()
