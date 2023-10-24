@@ -22,9 +22,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
-    config.SwaggerDoc("v1", new() { Title = "hackweek_backend", Version = "v1" });
+    config.SwaggerDoc("v1",new() { Title = "hackweek_backend",Version = "v1" });
 
-    config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    config.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
@@ -52,10 +52,10 @@ builder.Services.AddSwaggerGen(config =>
     });
 });
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserTokenService, UserTokenService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
+builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IUserTokenService,UserTokenService>();
 builder.Services.AddScoped<IEventService,EventService>();
 builder.Services.AddScoped<ITagService,TagService>();
 

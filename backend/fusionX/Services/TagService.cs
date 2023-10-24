@@ -24,7 +24,7 @@ namespace hackweek_backend.Services
             return await _context.Tags.FindAsync(id);
         }
 
-        public async Task<Tag> CreateTagAsync(TagCreateDto tagDto)
+        public async Task<Tag> CreateTagAsync(TagDtoCreate tagDto)
         {
             var tag = new Tag
             {
