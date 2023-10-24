@@ -51,6 +51,11 @@ namespace hackweek_backend.Services
             return dto;
         }
 
+        public async Task<UserTokenDto?> GetUserToken(string token)
+        {
+            return await _context.UserTokens.Select(ut => new UserTokenDto(ut)).FirstOrDefaultAsync(u => u.Token == token);
+        }
+
         public async Task DeleteUserToken(uint idUser)
         {
             var userToken = await _context.UserTokens.FindAsync(idUser) ?? throw new Exception("Token não encontrado!");
