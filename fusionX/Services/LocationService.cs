@@ -41,7 +41,24 @@ namespace hackweek_backend.Services
             await _context.SaveChangesAsync();
         }
 
-        //update
+        public async Task UpdateLocation(uint id, LocationDtoUpdate request)
+        {
+            var location = await _context.Locations.FindAsync(id);
+
+            if (location == null)
+            {
+                throw new Exception("Localização não encontrada!");
+            }
+            location.ZipCode = request.ZipCode;
+            location.State = request.State;
+            location.City = request.City;
+            location.Disctrict = request.Disctrict;
+            location.Street = request.Street;   
+            location.Number = request.Number;
+            location.Complement = request.Complement;
+
+            await _context.SaveChangesAsync();
+        }
 
         public async Task DeleteLocation(uint id)
         {

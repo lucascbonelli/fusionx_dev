@@ -6,7 +6,7 @@ namespace hackweek_backend.Services.Interfaces
     {
         Task<LocationDto?> GetLocationById(uint id);
         Task CreateLocation(LocationDtoInsert request);
-        //Task UpdateLocation(uint id, LocationDtoUpdate request);
+        Task UpdateLocation(uint id, LocationDtoUpdate request);
         Task DeleteLocation(uint id);
 
         //Task<IEnumerable<LocationDto>> GetLocationsByUserId(uint userId);

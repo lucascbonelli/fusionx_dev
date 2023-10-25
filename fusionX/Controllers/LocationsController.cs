@@ -46,7 +46,20 @@ namespace hackweek_backend.Controllers
             }
         }
 
-        //put
+        [HttpPut("{id}")]
+        [Authorize(Roles = UserRoles.Company)]
+        public async Task<ActionResult> UpdateLocation(uint id, LocationDtoUpdate request)
+        {
+            try
+            {
+                await _service.UpdateLocation(id, request);
+                return Ok("Localização atualizada com sucesso.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserRoles.Company)]
