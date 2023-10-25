@@ -8,11 +8,11 @@ namespace hackweek_backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AttendanceController : ControllerBase
+    public class AttendancesController : ControllerBase
     {
         private readonly IAttendanceService _service;
 
-        public AttendanceController(IAttendanceService service)
+        public AttendancesController(IAttendanceService service)
         {
             _service = service;
         }
