@@ -12,15 +12,8 @@
         public uint UserId { get; set; }
         public User? User { get; set; }
 
-        public ICollection<EventTag>? Tags { get; set; }
-        public ICollection<Session>? Sessions { get; set; }
-        public ICollection<EventImage>? EventImages { get; set; }
-
-        public Event()
-        {
-            Tags = new List<EventTag>();
-            Sessions = new List<Session>();
-            EventImages = new List<EventImage>();
-        }
+        public ICollection<EventTag>? Tags { get; set; } = new List<EventTag>();
+        public ICollection<Session>? Sessions { get; set; } = new List<Session>();
+        public ICollection<EventImage>? EventImages { get; set; } = new List<EventImage>();
     }
 }
