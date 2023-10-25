@@ -32,7 +32,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> CreateNotificationAsync(NotificationDtoInsert request)
         {
             try
@@ -50,7 +50,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> UpdateNotificationAsync(uint id, NotificationDtoUpdate request)
         {
             try
@@ -68,7 +68,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> DeleteNotificationAsync(uint id)
         {
             try
@@ -93,7 +93,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{idUser}")]
-        [Authorize(Roles = UserRoles.User)]
+        [Authorize(Roles = UserConstraints.Roles.User)]
         public async Task<ActionResult<NotificationDtoGetUser>> GetNotificationsByUser(uint idUser)
         {
             if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
@@ -102,7 +102,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{idUser}/new")]
-        [Authorize(Roles = UserRoles.User)]
+        [Authorize(Roles = UserConstraints.Roles.User)]
         public async Task<ActionResult<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser)
         {
             if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");

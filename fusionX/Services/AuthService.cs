@@ -85,7 +85,7 @@ namespace EvenTech.Services
             var user = GetCurrentUser(httpContext);
             if (user == null) return false;
 
-            return (user.Role == UserRoles.Admin) || (user.Id == idUser);
+            return (user.Role == UserConstraints.Roles.Admin) || (user.Id == idUser);
         }
 
         public string GetUserRole(HttpContext httpContext)

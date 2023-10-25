@@ -12,8 +12,8 @@ namespace EvenTech.Services
         private readonly DataContext _context;
 
         private readonly string[] _allowCreateRoleList = {
-            UserRoles.Company,
-            UserRoles.User,
+            UserConstraints.Roles.Company,
+            UserConstraints.Roles.User,
         };
 
         public UserService(DataContext context)
