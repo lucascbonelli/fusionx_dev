@@ -1,8 +1,9 @@
-﻿using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Dtos;
+using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hackweek_backend.Controllers
+namespace EvenTech.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -30,13 +31,28 @@ namespace hackweek_backend.Controllers
             }
         }
 
-        [HttpPost("confirm/{token}")]
+        [HttpGet("token/{token}")]
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string token)
+        public async Task<ActionResult> FindToken(string token)
         {
             try
             {
-                await _emailService.ConfirmEmail(token);
+                await _emailService.FindToken(token);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("token/{token}/confirm")]
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string token, [FromBody] string password)
+        {
+            try
+            {
+                await _emailService.ConfirmEmail(token, password);
                 return Ok();
             }
             catch (Exception e)

@@ -1,6 +1,6 @@
-﻿using hackweek_backend.Models;
+﻿using EvenTech.Models;
 
-namespace hackweek_backend.dtos
+namespace EvenTech.dtos
 {
     public class AttendanceDto
     {

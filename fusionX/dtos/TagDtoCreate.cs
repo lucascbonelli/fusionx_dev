@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace hackweek_backend.Dtos
+namespace EvenTech.Dtos
 {
     public class TagDtoCreate
     {

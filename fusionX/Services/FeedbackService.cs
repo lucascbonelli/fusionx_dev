@@ -1,14 +1,14 @@
-﻿using hackweek_backend.Data;
-using hackweek_backend.dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Data;
+using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class FeedbackService : IFeedbackService
     {

@@ -1,10 +1,12 @@
-﻿namespace EvenTech.Models
+﻿namespace EvenTech.Dtos
 {
-    public class NotificationTemplate
+    public class NotificationDtoInsert
     {
-        public uint Id { get; set; }
         public int Recipient { get; set; }
         public int Type { get; set; }
         public string Description { get; set; } = string.Empty;
+        public DateTime SendDate { get; set; }
+
+        public uint EventId { get; set; }
     }
 }
