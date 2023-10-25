@@ -1,4 +1,4 @@
-namespace EvenTech.Models
+namespace EvenTech.Models.Constraints
 {
     public class UserConstraints
     {
