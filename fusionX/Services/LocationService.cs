@@ -1,6 +1,10 @@
 ﻿using hackweek_backend.Data;
 using hackweek_backend.dtos;
+using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
+using System.Reflection.Emit;
 
 namespace hackweek_backend.Services
 {
@@ -20,7 +24,22 @@ namespace hackweek_backend.Services
             return location != null ? new LocationDto(location) : null;
         }
 
-        //create
+        public async Task CreateLocation(LocationDtoInsert request)
+        {
+            var locationModel = new Location
+            {
+                ZipCode = request.ZipCode,
+                State = request.State,
+                City = request.City,
+                Disctrict = request.Disctrict,
+                Street = request.Street,
+                Number = request.Number,
+                Complement = request.Complement,
+             };
+
+            await _context.Locations.AddAsync(locationModel);
+            await _context.SaveChangesAsync();
+        }
 
         //update
 

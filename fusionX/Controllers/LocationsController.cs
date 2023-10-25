@@ -18,8 +18,8 @@ namespace hackweek_backend.Controllers
             _service = service;
         }
 
-        [HttpGet("id")]
-        //[Authorize(Roles = UserRoles.Company)]
+        [HttpGet("{id}")]
+        [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult<LocationDto?>> GetLocationById(uint id)
         {
             var location = await _service.GetLocationById(id);
@@ -31,12 +31,25 @@ namespace hackweek_backend.Controllers
             return Ok(location);
         }
 
-        //post
+        [HttpPost]
+        [Authorize(Roles = UserRoles.Company)]
+        public async Task<ActionResult> CreateLocation(LocationDtoInsert request)
+        {
+            try
+            {
+                await _service.CreateLocation(request);
+                return Ok("Localização adicionada com sucesso!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         //put
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserRoles.Company)]
         public async Task<ActionResult> DeleteLocation(uint id)
         {
             try
