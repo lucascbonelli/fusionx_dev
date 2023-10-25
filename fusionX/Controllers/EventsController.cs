@@ -36,11 +36,11 @@ namespace hackweek_backend.Controllers
         public async Task<IActionResult> CreateEvent(EventDtoCreate eventItem)
         {
             var createdEvent = await _service.CreateEventAsync(eventItem);
-            return CreatedAtAction(nameof(GetEventById),new { id = createdEvent.Id },createdEvent);
+            return CreatedAtAction(nameof(GetEventById), new { id = createdEvent.Id }, createdEvent);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(uint id,EventDtoUpdate eventItem)
+        public async Task<IActionResult> UpdateEvent(uint id, EventDtoUpdate eventItem)
         {
             if (id != eventItem.Id)
                 return BadRequest();

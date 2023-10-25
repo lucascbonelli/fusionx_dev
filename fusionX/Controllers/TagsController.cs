@@ -41,11 +41,11 @@ namespace hackweek_backend.Controllers
                 return BadRequest(ModelState);
             }
             var createdTag = await _service.CreateTagAsync(tagDto);
-            return CreatedAtAction(nameof(GetTagById),new { id = createdTag.Id },createdTag);
+            return CreatedAtAction(nameof(GetTagById), new { id = createdTag.Id }, createdTag);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTag(uint id,Tag tag)
+        public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
             if (id != tag.Id)
             {

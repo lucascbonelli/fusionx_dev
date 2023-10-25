@@ -82,16 +82,16 @@ namespace hackweek_backend.Services
                 rng.GetBytes(bytes);
 
                 var password = Convert.ToBase64String(bytes)
-                    .Replace("/",string.Empty)
-                    .Replace("+",string.Empty)
-                    .Substring(0,passwordLength);
+                    .Replace("/", string.Empty)
+                    .Replace("+", string.Empty)
+                    .Substring(0, passwordLength);
 
                 var random = new Random();
                 for (int i = 0; i < 2; i++)
                 {
-                    int specialCharIndex = random.Next(0,specialCharacters.Length);
-                    int position = random.Next(0,password.Length);
-                    password = password.Remove(position,1).Insert(position,specialCharacters[specialCharIndex].ToString());
+                    int specialCharIndex = random.Next(0, specialCharacters.Length);
+                    int position = random.Next(0, password.Length);
+                    password = password.Remove(position, 1).Insert(position, specialCharacters[specialCharIndex].ToString());
                 }
 
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
@@ -101,7 +101,7 @@ namespace hackweek_backend.Services
             }
         }
 
-        public async Task UpdateUser(uint id,UserDtoUpdate request)
+        public async Task UpdateUser(uint id, UserDtoUpdate request)
         {
             if (request.Id != id) throw new Exception($"Id diferente do usuário informado! ({id} - {request.Id})");
 
