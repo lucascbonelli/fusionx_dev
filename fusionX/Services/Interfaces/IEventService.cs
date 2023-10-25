@@ -1,7 +1,7 @@
-﻿using hackweek_backend.Dtos;
-using hackweek_backend.Models;
+﻿using EvenTech.Dtos;
+using EvenTech.Models;
 
-namespace hackweek_backend.Services.Interfaces
+namespace EvenTech.Services.Interfaces
 {
     public interface IEventService
     {
@@ -10,5 +10,7 @@ namespace hackweek_backend.Services.Interfaces
         Task<Event> CreateEventAsync(Event eventItem);
         Task UpdateEventAsync(Event eventItem);
         Task DeleteEventAsync(uint id);
+
+        Task<uint?> GetUserIdByEvent(uint id);
     }
 }

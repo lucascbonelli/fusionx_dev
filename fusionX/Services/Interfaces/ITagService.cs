@@ -1,7 +1,7 @@
-﻿using hackweek_backend.Dtos;
-using hackweek_backend.Models;
+﻿using EvenTech.Dtos;
+using EvenTech.Models;
 
-namespace hackweek_backend.Services.Interfaces
+namespace EvenTech.Services.Interfaces
 {
     public interface ITagService
     {

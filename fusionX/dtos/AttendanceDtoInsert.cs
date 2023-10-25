@@ -1,4 +1,4 @@
-﻿namespace hackweek_backend.dtos
+﻿namespace EvenTech.dtos
 {
     public class AttendanceDtoInsert
     {

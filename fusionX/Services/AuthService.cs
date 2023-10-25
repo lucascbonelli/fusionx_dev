@@ -1,13 +1,13 @@
-﻿using hackweek_backend.Data;
-using hackweek_backend.Dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Data;
+using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class AuthService : IAuthService
     {
@@ -22,6 +22,8 @@ namespace hackweek_backend.Services
 
         public async Task<string> Login(AuthDtoLogin request)
         {
+            if (request.Password == string.Empty) throw new Exception("Senha não informada!");
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email) ?? throw new Exception("Usuário não encontrado!");
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) throw new Exception("Senha incorreta!");

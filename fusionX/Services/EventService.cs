@@ -1,9 +1,9 @@
-﻿using hackweek_backend.Data;
-using hackweek_backend.Dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Data;
+using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class EventService : IEventService
     {
@@ -50,6 +50,13 @@ namespace hackweek_backend.Services
                 _context.Events.Remove(eventToDelete);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<uint?> GetUserIdByEvent(uint id)
+        {
+            var model = await _context.Events.FindAsync(id);
+
+            return model?.UserId;
         }
     }
 }

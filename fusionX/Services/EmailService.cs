@@ -1,11 +1,12 @@
-using hackweek_backend.Services.Interfaces;
+using EvenTech.Services.Interfaces;
 using MailKit.Security;
 using MimeKit.Text;
 using MimeKit;
 using MailKit.Net.Smtp;
-using hackweek_backend.Data;
+using EvenTech.Data;
+using EvenTech.Models;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class EmailService : IEmailService
     {
@@ -22,6 +23,7 @@ namespace hackweek_backend.Services
 
         public async Task SendConfirmationEmail(string email, string url)
         {
+
             var userToken = await _userTokenService.GenerateUserToken(email);
             if (userToken.User == null) throw new Exception("Usuário não encontrado!");
 
@@ -30,24 +32,32 @@ namespace hackweek_backend.Services
             TextPart body;
             if (userToken.User.IsEmailConfirmed)
             {
-                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para recuperar sua senha do sistema FusionX <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar a senha novamente." };
+                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para recuperar sua senha do sistema EvenTech <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar a senha novamente." };
             }
             else
             {
-                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para confirmar o seu e-mail junto ao sistema FusionX <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar uma nova confirmação." };
+                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para confirmar o seu e-mail junto ao sistema EvenTech <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar uma nova confirmação." };
             }
 
             InternalSendEmail(email, "Confirmação de e-mail", body);
         }
 
-        public async Task ConfirmEmail(string token)
+        public async Task<UserToken> FindToken(string token)
         {
             var userToken = await _context.UserTokens.Include(ut => ut.User).FirstOrDefaultAsync(u => u.Token == token) ?? throw new Exception("Token não encontrado!");
             if (DateTime.Now > userToken.ExpirationDate) throw new Exception("Link de acesso expirou!");
+            return userToken;
+        }
+
+        public async Task ConfirmEmail(string token, string password)
+        {
+            var userToken = await FindToken(token);
 
             if (userToken.User != null)
             {
                 userToken.User.IsEmailConfirmed = true;
+                userToken.User.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
                 _context.Entry(userToken.User).State = EntityState.Modified;
             }
             _context.UserTokens.Remove(userToken);

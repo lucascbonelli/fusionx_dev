@@ -1,24 +1,26 @@
-using hackweek_backend.Dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hackweek_backend.Controllers
+namespace EvenTech.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _service;
+        private readonly IAuthService _auth;
 
-        public UsersController(IUserService service)
+        public UsersController(IUserService service, IAuthService auth)
         {
             _service = service;
+            _auth = auth;
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [AllowAnonymous]
         public async Task<ActionResult<UserDto?>> GetUserById(uint id)
         {
             var user = await _service.GetUserById(id);
@@ -28,7 +30,7 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Admin)]
+        [AllowAnonymous]
         public async Task<ActionResult> CreateUser(UserDtoInsert request)
         {
             try
@@ -43,11 +45,13 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize]
         public async Task<ActionResult> DeleteUser(uint id)
         {
             try
             {
+                if (!_auth.HasAccessToUser(HttpContext, id)) return Unauthorized($"Acesso ao usuário {id} foi negado.");
+
                 await _service.DeleteUser(id);
                 return Ok("Usuário excluído com sucesso!");
             }
@@ -58,37 +62,19 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Admin)]
+        [Authorize]
         public async Task<ActionResult> UpdateUser(uint id, UserDtoUpdate request)
         {
             try
             {
+                if (!_auth.HasAccessToUser(HttpContext, id)) return Unauthorized($"Acesso ao usuário {id} foi negado.");
+
                 await _service.UpdateUser(id, request);
                 return Ok("Usuário atualizado com sucesso!");
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("role/{role}")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersEventByRole(string role)
-        {
-            return Ok(await _service.GetUsersEventByRole(role));
-        }
-
-        [HttpGet("{id}/redefine")]
-        [Authorize(Roles = UserRoles.Admin)]
-        public async Task<ActionResult<string>> RedefinePassword(uint id)
-        {
-            try
-            {
-                return Ok(await _service.RedefinePassword(id));
-            }
-            catch (Exception e)
-            {
+                Console.WriteLine(e.Message);
                 return BadRequest(e.Message);
             }
         }
