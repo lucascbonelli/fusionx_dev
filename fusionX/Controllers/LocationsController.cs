@@ -76,12 +76,5 @@ namespace hackweek_backend.Controllers
             }
         }
 
-        //userid
-
-        //location id
-
-        //confirmed id
-
-
     }
 }

@@ -73,11 +73,5 @@ namespace hackweek_backend.Services
             await _context.SaveChangesAsync();
         }
 
-        //Locations by id
-
-        //locations by user
-
-        //locations by confirmed
-
     }
 }

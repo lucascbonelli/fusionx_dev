@@ -9,8 +9,5 @@ namespace hackweek_backend.Services.Interfaces
         Task UpdateLocation(uint id, LocationDtoUpdate request);
         Task DeleteLocation(uint id);
 
-        //Task<IEnumerable<LocationDto>> GetLocationsByUserId(uint userId);
-        //Task<IEnumerable<LocationDto>> GetLocationsByEventDayId(uint eventDayId);
-        //Task<int> GetTotalConfirmedLocations(uint eventId);
     }
 }
