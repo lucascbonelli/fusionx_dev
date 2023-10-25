@@ -21,21 +21,19 @@ namespace EvenTech.Services
             _userTokenService = userTokenService;
         }
 
-        public async Task SendConfirmationEmail(string email, string url)
+        public async Task SendConfirmationEmail(string email)
         {
             var userToken = await _userTokenService.GenerateUserToken(email);
             if (userToken.User == null) throw new Exception("Usuário não encontrado!");
 
-            url = url.Replace("{token}", userToken.Token);
-
             TextPart body;
             if (userToken.User.IsEmailConfirmed)
             {
-                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para recuperar sua senha do sistema EvenTech <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar a senha novamente." };
+                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para recuperar sua senha do sistema EvenTech utilize a chave abaixo na aplicação:<br><br>{userToken.Token}<br><br>A chave expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar a senha novamente." };
             }
             else
             {
-                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para confirmar o seu e-mail junto ao sistema EvenTech <a href={url}>clique aqui</a> ou acesse o link abaixo:<br><br>{url}<br><br>O link expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar uma nova confirmação." };
+                body = new TextPart(TextFormat.Html) { Text = $"{userToken.User.Name},<br>Para confirmar o seu e-mail junto ao sistema EvenTech utilize a chave abaixo na aplicação:<br><br>{userToken.Token}<br><br>A chave expira em {_config["Email:MinsExpire"]} minutos, após isto será necessário solicitar uma nova confirmação." };
             }
 
             InternalSendEmail(email, "Confirmação de e-mail", body);
