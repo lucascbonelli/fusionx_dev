@@ -1,4 +1,5 @@
-﻿namespace hackweek_backend.dtos
+﻿using hackweek_backend.Models;
+namespace hackweek_backend.dtos
 {
     public class LocationDto
     {
@@ -11,5 +12,17 @@
 
         public int Number { get; set; }
         public string Complement { get; set; } = string.Empty;
+
+        public LocationDto(Location location) 
+        {
+            Id = location.Id;
+            ZipCode = location.ZipCode;
+            State = location.State;
+            City = location.City;
+            Disctrict = location.Disctrict;
+            Street = location.Street;
+            Number = location.Number;
+            Complement = location.Complement;
+        }
     }
 }
