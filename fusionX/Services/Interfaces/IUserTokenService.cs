@@ -1,6 +1,6 @@
-using hackweek_backend.Dtos;
+using EvenTech.Dtos;
 
-namespace hackweek_backend.Services.Interfaces
+namespace EvenTech.Services.Interfaces
 {
     public interface IUserTokenService
     {

@@ -1,9 +1,9 @@
-using hackweek_backend.Data;
-using hackweek_backend.Dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+using EvenTech.Data;
+using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class UserTokenService : IUserTokenService
     {
@@ -23,7 +23,6 @@ namespace hackweek_backend.Services
             var userToken = await _context.UserTokens.FirstOrDefaultAsync(u => u.Email == email);
             var user = await _userService.GetUserByEmail(email) ?? throw new Exception($"Email não encontrado! ({email})");
             var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-
 
             if (userToken == null)
             {

@@ -1,11 +1,11 @@
-﻿using hackweek_backend.Dtos;
-using hackweek_backend.Models;
-using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Dtos;
+using EvenTech.Models;
+using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hackweek_backend.Controllers
+namespace EvenTech.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TagsController : ControllerBase
     {
@@ -41,11 +41,11 @@ namespace hackweek_backend.Controllers
                 return BadRequest(ModelState);
             }
             var createdTag = await _service.CreateTagAsync(tagDto);
-            return CreatedAtAction(nameof(GetTagById),new { id = createdTag.Id },createdTag);
+            return CreatedAtAction(nameof(GetTagById), new { id = createdTag.Id }, createdTag);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTag(uint id,Tag tag)
+        public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
             if (id != tag.Id)
             {

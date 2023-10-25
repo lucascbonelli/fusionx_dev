@@ -1,6 +1,6 @@
-﻿using hackweek_backend.Models;
+﻿using EvenTech.Models;
 
-namespace hackweek_backend.Dtos
+namespace EvenTech.Dtos
 {
     public class UserTokenDto
     {

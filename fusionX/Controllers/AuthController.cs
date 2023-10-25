@@ -1,9 +1,9 @@
-﻿using hackweek_backend.Dtos;
-using hackweek_backend.Services.Interfaces;
+﻿using EvenTech.Dtos;
+using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace hackweek_backend.Controllers
+namespace EvenTech.Controllers
 {
     [Route("[controller]")]
     [ApiController]
