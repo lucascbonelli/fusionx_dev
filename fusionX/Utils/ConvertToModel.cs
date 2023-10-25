@@ -22,6 +22,16 @@ namespace hackweek_backend.Utils
             };
         }
 
+        public static void ToModel(Event existingEvent,EventDtoUpdate dto)
+        {
+            existingEvent.Title = dto.Title;
+            existingEvent.Description = dto.Description;
+            existingEvent.BeginDate = dto.BeginDate;
+            existingEvent.EndDate = dto.EndDate;
+            existingEvent.BannerImage = dto.BannerImage;
+            existingEvent.UserId = dto.UserId;
+        }
+
         public static User ToModel(UserDto dto)
         {
             return new User
