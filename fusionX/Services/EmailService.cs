@@ -1,9 +1,9 @@
-using hackweek_backend.Services.Interfaces;
-using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
-using MailKit.Net.Smtp;
 using hackweek_backend.Data;
+using hackweek_backend.Services.Interfaces;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
 
 namespace hackweek_backend.Services
 {

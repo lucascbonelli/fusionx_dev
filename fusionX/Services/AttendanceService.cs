@@ -18,7 +18,7 @@ namespace hackweek_backend.Services
         {
             var attendance = await _context.Attendances.FindAsync(id);
 
-            return attendance != null ? new AttendanceDto(attendance): null;
+            return attendance != null ? new AttendanceDto(attendance) : null;
         }
         public async Task CreateAttendance(AttendanceDtoInsert request)
         {

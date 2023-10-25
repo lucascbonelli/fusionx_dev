@@ -7,7 +7,7 @@ namespace hackweek_backend.Models
         public uint Id { get; set; }
 
         [Required(ErrorMessage = "A descrição é obrigatória.")]
-        [StringLength(100,ErrorMessage = "A descrição não pode exceder 100 caracteres.")]
+        [StringLength(100, ErrorMessage = "A descrição não pode exceder 100 caracteres.")]
         public string Description { get; set; } = string.Empty;
     }
 }
