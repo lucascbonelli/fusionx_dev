@@ -2,6 +2,7 @@
 using hackweek_backend.Dtos;
 using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
+using hackweek_backend.Utils;
 
 namespace hackweek_backend.Services
 {
@@ -29,16 +30,22 @@ namespace hackweek_backend.Services
             return new EventDto(modelEvent);
         }
 
-        public async Task<Event> CreateEventAsync(Event eventItem)
+        public async Task<Event> CreateEventAsync(EventDtoCreate eventDtoCreateItem)
         {
-            _context.Events.Add(eventItem);
+            var eventModel = ConvertToModel.ToModel(eventDtoCreateItem);
+            _context.Events.Add(eventModel);
             await _context.SaveChangesAsync();
-            return eventItem;
+            return eventModel;
         }
 
-        public async Task UpdateEventAsync(Event eventItem)
+        public async Task UpdateEventAsync(uint id,EventDtoUpdate eventDtoUpdateItem)
         {
-            _context.Entry(eventItem).State = EntityState.Modified;
+            var existingEvent = await _context.Events.FindAsync(id);
+            if (existingEvent == null)
+            {
+                throw new InvalidOperationException($"Event with ID {id} not found.");
+            }
+            ConvertToModel.ToModel(existingEvent,eventDtoUpdateItem);
             await _context.SaveChangesAsync();
         }
 

@@ -1,10 +1,11 @@
-﻿using hackweek_backend.Models;
+﻿using hackweek_backend.Dtos;
+using hackweek_backend.Models;
 using hackweek_backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace hackweek_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
     {
@@ -32,19 +33,18 @@ namespace hackweek_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEvent(Event eventItem)
+        public async Task<IActionResult> CreateEvent(EventDtoCreate eventItem)
         {
             var createdEvent = await _service.CreateEventAsync(eventItem);
             return CreatedAtAction(nameof(GetEventById),new { id = createdEvent.Id },createdEvent);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(uint id,Event eventItem)
+        public async Task<IActionResult> UpdateEvent(uint id,EventDtoUpdate eventItem)
         {
             if (id != eventItem.Id)
                 return BadRequest();
-
-            await _service.UpdateEventAsync(eventItem);
+            await _service.UpdateEventAsync(id,eventItem);
             return NoContent();
         }
 
