@@ -1,8 +1,9 @@
-﻿namespace EvenTech.Models
+﻿using EvenTech.Models;
+
+namespace EvenTech.Dtos
 {
-    public class Event
+    public class EventDtoCreate
     {
-        public uint Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime BeginDate { get; set; }
@@ -10,7 +11,6 @@
         public byte[]? BannerImage { get; set; }
 
         public uint UserId { get; set; }
-        public User? User { get; set; }
 
         public ICollection<EventTag>? Tags { get; set; } = new List<EventTag>();
         public ICollection<Session>? Sessions { get; set; } = new List<Session>();

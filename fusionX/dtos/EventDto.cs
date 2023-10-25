@@ -20,20 +20,17 @@ namespace EvenTech.Dtos
 
         public EventDto(Event @event)
         {
-            if (@event != null)
-            {
-                Id = @event.Id;
-                Title = @event.Title;
-                Description = @event.Description;
-                BeginDate = @event.BeginDate;
-                EndDate = @event.EndDate;
-                BannerImage = @event.BannerImage;
-                UserId = @event.UserId;
-                UserDto = (@event.User == null) ? null : new UserDto(@event.User);
-                Tags = @event.Tags;
-                Sessions = @event.Sessions;
-                EventImages = @event.EventImages;
-            }
+            Id = @event.Id;
+            Title = @event.Title;
+            Description = @event.Description;
+            BeginDate = @event.BeginDate;
+            EndDate = @event.EndDate;
+            BannerImage = @event.BannerImage;
+            UserId = @event.UserId;
+            UserDto = (@event.User == null) ? null : new UserDto(@event.User);
+            Tags = @event.Tags;
+            Sessions = @event.Sessions;
+            EventImages = @event.EventImages;
         }
     }
 }

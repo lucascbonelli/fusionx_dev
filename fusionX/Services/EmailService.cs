@@ -1,10 +1,10 @@
-using EvenTech.Services.Interfaces;
-using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
-using MailKit.Net.Smtp;
 using EvenTech.Data;
 using EvenTech.Models;
+using EvenTech.Services.Interfaces;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
 
 namespace EvenTech.Services
 {
@@ -23,7 +23,6 @@ namespace EvenTech.Services
 
         public async Task SendConfirmationEmail(string email, string url)
         {
-
             var userToken = await _userTokenService.GenerateUserToken(email);
             if (userToken.User == null) throw new Exception("Usuário não encontrado!");
 

@@ -61,11 +61,11 @@ namespace EvenTech.Services
             var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
             if (claimsIdentity is null) return null;
 
-            var nameId     = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            var email      = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-            var givenName  = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
+            var nameId = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            var email = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            var givenName = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
             var persistent = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.IsPersistent);
-            var role       = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            var role = claimsIdentity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
 
             if ((nameId is null) || (email is null) || (givenName is null) || (persistent is null) || (role is null))
                 return null;
