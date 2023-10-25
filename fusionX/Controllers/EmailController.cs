@@ -18,11 +18,11 @@ namespace EvenTech.Controllers
 
         [HttpPost("send/{email}")]
         [AllowAnonymous]
-        public async Task<ActionResult> SendConfirmationEmail(string email, [FromQuery] string url)
+        public async Task<ActionResult> SendConfirmationEmail(string email)
         {
             try
             {
-                await _emailService.SendConfirmationEmail(email, url);
+                await _emailService.SendConfirmationEmail(email);
                 return Ok();
             }
             catch (Exception e)
