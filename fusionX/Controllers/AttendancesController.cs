@@ -1,5 +1,6 @@
 ﻿using EvenTech.dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<AttendanceDto?>> GetAttendanceById(uint id)
         {
             var attendance = await _service.GetAttendanceById(id);
@@ -31,7 +32,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> CreateAttendance(AttendanceDtoInsert request)
         {
             try
@@ -46,7 +47,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> UpdateAttendance(uint id, AttendanceDtoUpdate request)
         {
             try
@@ -61,7 +62,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> DeleteAttendance(uint id)
         {
             try
@@ -76,7 +77,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> GetAttendancesByUserId(uint userId)
         {
             var attendances = await _service.GetAttendancesByUserId(userId);
@@ -84,7 +85,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("eventday/{eventDayId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<IEnumerable<AttendanceDto>>> GetAttendancesByEventDayId(uint eventDayId)
         {
             var attendances = await _service.GetAttendancesByEventDayId(eventDayId);
@@ -92,7 +93,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("totalconfirmed/{eventId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<int>> GetTotalConfirmedAttendances(uint eventId)
         {
             var totalConfirmedAttendances = await _service.GetTotalConfirmedAttendances(eventId);

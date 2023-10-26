@@ -1,6 +1,7 @@
 ﻿using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -85,7 +86,7 @@ namespace EvenTech.Services
             var user = GetCurrentUser(httpContext);
             if (user == null) return false;
 
-            return (user.Role == UserRoles.Admin) || (user.Id == idUser);
+            return (user.Role == UserConstraints.Roles.Admin) || (user.Id == idUser);
         }
 
         public string GetUserRole(HttpContext httpContext)

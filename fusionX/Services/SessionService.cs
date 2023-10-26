@@ -20,11 +20,10 @@ namespace EvenTech.Services
             return session != null ? new SessionDto(session) : null;
         }
 
-        public async Task CreateSession(SessionDto request)
+        public async Task<Session> CreateSession(SessionDtoInsert request)
         {
             var sessionModel = new Session
             {
-                Date = request.Date,
                 Capacity = request.Capacity,
                 EventId = request.EventId,
                 LocationId = request.LocationId
@@ -32,10 +31,13 @@ namespace EvenTech.Services
 
             await _context.Sessions.AddAsync(sessionModel);
             await _context.SaveChangesAsync();
+            return sessionModel;
         }
 
         public async Task UpdateSession(uint id, SessionDtoUpdate request)
         {
+            if (request.Id != id) throw new Exception($"Id diferente da sessão informada! ({id} - {request.Id})");
+
             var session = await _context.Sessions.FindAsync(id);
 
             if (session == null)
@@ -43,8 +45,8 @@ namespace EvenTech.Services
                 throw new Exception("Sessão não encontrada!");
             }
 
-            session.Date = request.Date;
             session.Capacity = request.Capacity;
+            session.LocationId = request.LocationId;
 
             await _context.SaveChangesAsync();
         }
@@ -82,7 +84,7 @@ namespace EvenTech.Services
             }
 
             var bookedCapacity = await _context.Attendances
-                .CountAsync(a => a.LectureId == sessionId && a.Status == "Confirmado");
+                .CountAsync(a => a.SessionId == sessionId && a.Status == "Confirmado");
 
             var availableCapacity = session.Capacity - bookedCapacity;
             return availableCapacity;

@@ -30,10 +30,10 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateSession([FromBody] SessionDto request)
+        public async Task<ActionResult> CreateSession([FromBody] SessionDtoInsert request)
         {
-            await _sessionService.CreateSession(request);
-            return CreatedAtAction("CreateSession", new { id = request.Id }, request);
+            var session = await _sessionService.CreateSession(request);
+            return CreatedAtAction("CreateSession", new { id = session.Id }, session);
         }
 
         [HttpPut("{id}")]
