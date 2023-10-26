@@ -1,6 +1,4 @@
-﻿using EvenTech.Models;
-
-namespace EvenTech.Dtos
+﻿namespace EvenTech.Dtos
 {
     public class EventDtoCreate
     {
@@ -12,8 +10,8 @@ namespace EvenTech.Dtos
 
         public uint UserId { get; set; }
 
-        public ICollection<EventTag>? Tags { get; set; } = new List<EventTag>();
-        public ICollection<Session>? Sessions { get; set; } = new List<Session>();
-        public ICollection<EventImage>? EventImages { get; set; } = new List<EventImage>();
+        public ICollection<uint>? TagIds { get; set; }
+        public ICollection<SessionDtoCreate>? Sessions { get; set; }
+        public ICollection<byte[]>? EventImages { get; set; }
     }
 }
