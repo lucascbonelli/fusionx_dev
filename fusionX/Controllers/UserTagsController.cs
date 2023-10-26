@@ -1,6 +1,7 @@
 ﻿using EvenTech.dtos;
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace EvenTech.Controllers
 
         //get
         [HttpGet("tag/{tagId}/user{userId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<UserTagDto?>> GetUserTag(uint tagId, uint userId)
         {
             var userTag = await _service.GetUserTag(tagId, userId);
@@ -35,7 +36,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> CreateUserTag(UserTagDtoInsert request)
         {
             try
@@ -50,7 +51,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("tag/{tagId}/user/{userId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> DeleteUserTag(uint tagId, uint userId)
         {
             try
@@ -65,7 +66,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<IEnumerable<UserTagDto>>> GetUserTagsByUserId(uint userId)
         {
             var userTags = await _service.GetUserTagsByUserId(userId);
@@ -73,7 +74,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("tag/{tagId}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<IEnumerable<UserTagDto>>> GetUserTagsByTagId(uint tagId)
         {
             var userTags = await _service.GetUserTagsByUserId(tagId);
