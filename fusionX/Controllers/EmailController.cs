@@ -1,5 +1,4 @@
-﻿using EvenTech.Dtos;
-using EvenTech.Services.Interfaces;
+﻿using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

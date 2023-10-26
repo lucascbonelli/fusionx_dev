@@ -2,8 +2,6 @@ using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
-using System.Data;
-using System.Security.Cryptography;
 
 namespace EvenTech.Services
 {
