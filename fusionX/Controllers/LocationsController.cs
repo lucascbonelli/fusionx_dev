@@ -76,5 +76,18 @@ namespace EvenTech.Controllers
             }
         }
 
+        [HttpGet("ZipCode/{ZipCode}")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
+        public async Task<ActionResult<LocationDto?>> GetLocationByZipCode(uint ZipCode)
+        {
+            var location = await _service.GetLocationByZipCode(ZipCode);
+            if (location == null)
+            {
+                return NotFound("Localização não encontrada!");
+            }
+
+            return Ok(location);
+        }
+
     }
 }

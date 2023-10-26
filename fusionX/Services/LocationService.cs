@@ -70,5 +70,11 @@ namespace EvenTech.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<LocationDto?> GetLocationByZipCode(uint ZipCode)
+        {
+            var location = await _context.Locations.FindAsync(ZipCode);
+
+            return location != null ? new LocationDto(location) : null;
+        }
     }
 }
