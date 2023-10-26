@@ -76,7 +76,7 @@ namespace EvenTech.Controllers
             }
         }
 
-        [HttpGet("{ZipCode}")]
+        [HttpGet("ZipCode/{ZipCode}")]
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<LocationDto?>> GetLocationByZipCode(uint ZipCode)
         {
