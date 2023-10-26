@@ -32,6 +32,7 @@ namespace EvenTech.Services
             {
                 Recipient = request.Recipient,
                 Type = request.Type,
+                Title = request.Title,
                 Description = request.Description,
                 SendDate = request.SendDate,
                 EventId = request.EventId,
@@ -48,6 +49,7 @@ namespace EvenTech.Services
 
             model.Recipient = request.Recipient;
             model.Type = request.Type;
+            model.Title = request.Title;
             model.Description = request.Description;
             model.SendDate = request.SendDate;
 

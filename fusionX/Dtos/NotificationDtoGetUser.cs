@@ -6,6 +6,7 @@ namespace EvenTech.Dtos
     {
         public uint Id { get; set; }
         public int Type { get; set; }
+        public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime SendDate { get; set; }
 
@@ -18,6 +19,7 @@ namespace EvenTech.Dtos
         {
             Id = model.Id;
             Type = model.Type;
+            Title = model.Title;
             Description = model.Description;
             SendDate = model.SendDate;
             EventId = model.EventId;
