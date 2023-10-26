@@ -2,10 +2,10 @@
 
 namespace EvenTech.Dtos
 {
-    public class SessionDtoCreate
+    public class EventDtoSessionCreate
     {
         public int Capacity { get; set; }
         public uint? LocationId { get; set; }
-        public ICollection<LectureDtoCreate>? Lectures { get; set; }
+        public ICollection<EventDtoLectureCreate>? Lectures { get; set; }
     }
 }

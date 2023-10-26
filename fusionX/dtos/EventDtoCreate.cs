@@ -11,7 +11,7 @@
         public uint UserId { get; set; }
 
         public ICollection<uint>? TagIds { get; set; }
-        public ICollection<SessionDtoCreate>? Sessions { get; set; }
+        public ICollection<EventDtoSessionCreate>? Sessions { get; set; }
         public ICollection<byte[]>? EventImages { get; set; }
     }
 }
