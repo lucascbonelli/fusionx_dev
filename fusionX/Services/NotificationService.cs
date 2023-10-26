@@ -111,38 +111,85 @@ namespace EvenTech.Services
                 .Include(a => a.Session)
                 .Where(a => a.UserId == idUser)
                 .Select(a => a.Session).OfType<Session>()
-                .Select(s => s.EventId)
+                .Include(s => s.Event)
+                .Select(s => s.Event).OfType<Event>()
                 .Distinct().ToListAsync();
 
-            var notifications = await _context.Notifications
-                .Include(n => n.Event)
-                .Where(n => (events.Contains(n.EventId)) && (n.Event != null) && (n.Event.LastNotify < n.SendDate))
-                .ToListAsync();
-
-            notifications.ForEach(notification =>
+            // Loop events
+            foreach (var @event in events)
             {
-                var users = GetUsersByRecipient(notification.EventId, notification.Recipient);
+                var initTime = DateTime.Now;
 
-                users.ForEach(idUser =>
+                var notifications = await _context.Notifications
+                    .Where(n => (n.EventId == @event.Id) && (n.SendDate >= @event.LastNotify))
+                    .ToListAsync();
+
+                // Update event
+                @event.LastNotify = initTime;
+                await _context.SaveChangesAsync();
+
+                // Loop notifications
+                foreach (var notification in notifications)
                 {
-                    _feedback.CreateFeedback(new FeedbackDto
+                    var userIds = await GetUsersByRecipient(notification.EventId, notification.Recipient);
+
+                    // Loop users
+                    foreach (var userId in userIds)
                     {
-                        Date = notification.SendDate,
-                        NotificationId = notification.Id,
-                        UserId = idUser,
-                    });
-                });
-            });
+                        // Create feedback
+                        await _feedback.CreateFeedback(new FeedbackDto
+                        {
+                            Date = notification.SendDate,
+                            NotificationId = notification.Id,
+                            UserId = userId,
+                        });
+                    }
+                }
+            }
         }
 
-        private List<uint> GetUsersByRecipient(uint idEvent, int recipient)
+        private async Task<List<uint>> GetUsersByRecipient(uint idEvent, int recipient)
         {
-            return _context.Attendances
-                .Include(a => a.Session)
-                .Where(a => (a.Session != null) && (a.Session.EventId == idEvent))
-                .Select(a => a.UserId)
-                .Distinct()
-                .ToList();
+            switch (recipient)
+            {
+                case 1: // Todos
+                    return await _context.Attendances
+                        .Include(a => a.Session)
+                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent))
+                        .Select(a => a.UserId)
+                        .Distinct()
+                        .ToListAsync();
+                case 2: // Presentes
+                    return await _context.Attendances
+                        .Include(a => a.Session)
+                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Confirmado"))
+                        .Select(a => a.UserId)
+                        .Distinct()
+                        .ToListAsync();
+                case 3: // Ausentes - Todos
+                    return await _context.Attendances
+                        .Include(a => a.Session)
+                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado"))
+                        .Select(a => a.UserId)
+                        .Distinct()
+                        .ToListAsync();
+                case 4: // Ausentes - Cancelados
+                    return await _context.Attendances
+                        .Include(a => a.Session)
+                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Cancelado"))
+                        .Select(a => a.UserId)
+                        .Distinct()
+                        .ToListAsync();
+                case 5: // Ausentes - Sem feedback
+                    return await _context.Attendances
+                        .Include(a => a.Session)
+                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado") && (a.Status != "Cancelado"))
+                        .Select(a => a.UserId)
+                        .Distinct()
+                        .ToListAsync();
+                default: // Nenhum
+                    return new List<uint>();
+            }
         }
 
         public async Task<IEnumerable<NotificationTypeDto>> GetAllNotificationTypes()

@@ -74,6 +74,9 @@ namespace EvenTech.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.SendDate);
+
+            modelBuilder.Entity<Notification>()
                 .HasOne(n => n.Event).WithMany()
                 .HasForeignKey(n => n.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
