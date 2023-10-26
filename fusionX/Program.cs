@@ -60,6 +60,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();    
+builder.Services.AddScoped<ILectureService, LectureService>();  
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
