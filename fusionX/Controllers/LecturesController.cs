@@ -86,7 +86,8 @@ namespace EvenTech.Controllers
         public async Task<IEnumerable<LectureDto>> GetLecturesByEventId(uint eventId)
         {
             var lectures = await _context.Lectures
-                .Where(lecture => lecture.Session.EventId == eventId)
+                .Include(lecture => lecture.Session)
+                .Where(lecture => (lecture.Session != null) && (lecture.Session.EventId == eventId))
                 .Select(lecture => new LectureDto
                 {
                     Id = lecture.Id,

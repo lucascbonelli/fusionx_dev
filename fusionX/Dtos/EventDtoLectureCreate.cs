@@ -2,7 +2,7 @@
 
 namespace EvenTech.Dtos
 {
-    public class LectureDtoCreate
+    public class EventDtoLectureCreate
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

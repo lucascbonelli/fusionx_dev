@@ -9,5 +9,7 @@ namespace EvenTech.Services.Interfaces
         Task UpdateLocation(uint id, LocationDtoUpdate request);
         Task DeleteLocation(uint id);
 
+        Task<LocationDto?> GetLocationByZipCode(uint ZipCode);
+
     }
 }
