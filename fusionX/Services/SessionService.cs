@@ -20,7 +20,7 @@ namespace EvenTech.Services
             return session != null ? new SessionDto(session) : null;
         }
 
-        public async Task CreateSession(SessionDto request)
+        public async Task<Session> CreateSession(SessionDtoInsert request)
         {
             var sessionModel = new Session
             {
@@ -31,10 +31,13 @@ namespace EvenTech.Services
 
             await _context.Sessions.AddAsync(sessionModel);
             await _context.SaveChangesAsync();
+            return sessionModel;
         }
 
         public async Task UpdateSession(uint id, SessionDtoUpdate request)
         {
+            if (request.Id != id) throw new Exception($"Id diferente da sessão informada! ({id} - {request.Id})");
+
             var session = await _context.Sessions.FindAsync(id);
 
             if (session == null)
@@ -43,6 +46,7 @@ namespace EvenTech.Services
             }
 
             session.Capacity = request.Capacity;
+            session.LocationId = request.LocationId;
 
             await _context.SaveChangesAsync();
         }

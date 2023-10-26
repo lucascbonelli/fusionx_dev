@@ -1,11 +1,12 @@
 ﻿using EvenTech.Dtos;
+using EvenTech.Models;
 
 namespace EvenTech.Services.Interfaces
 {
     public interface ISessionService
     {
         Task<SessionDto?> GetSessionDayById(uint id);
-        Task CreateSession(SessionDto request);
+        Task<Session> CreateSession(SessionDtoInsert request);
         Task UpdateSession(uint id, SessionDtoUpdate request);
         Task DeleteSession(uint id);
 
