@@ -24,7 +24,6 @@ namespace EvenTech.Services
         {
             var sessionModel = new Session
             {
-                Date = request.Date,
                 Capacity = request.Capacity,
                 EventId = request.EventId,
                 LocationId = request.LocationId
@@ -43,7 +42,6 @@ namespace EvenTech.Services
                 throw new Exception("Sessão não encontrada!");
             }
 
-            session.Date = request.Date;
             session.Capacity = request.Capacity;
 
             await _context.SaveChangesAsync();

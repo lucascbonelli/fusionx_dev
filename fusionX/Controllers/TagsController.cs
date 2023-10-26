@@ -1,5 +1,6 @@
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
             if(!ModelState.IsValid)
@@ -49,7 +50,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
             if(id != tag.Id)
@@ -61,7 +62,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
         public async Task<IActionResult> DeleteTag(uint id)
         {
             var tag = await _service.GetTagByIdAsync(id);
