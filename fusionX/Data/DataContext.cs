@@ -26,8 +26,8 @@ namespace EvenTech.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Attendance>()
-                .HasOne(a => a.EventDay).WithMany()
-                .HasForeignKey(a => a.LectureId)
+                .HasOne(a => a.Session).WithMany()
+                .HasForeignKey(a => a.SessionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Attendance>()
@@ -72,6 +72,9 @@ namespace EvenTech.Data
                 .HasOne(s => s.Session).WithMany(s => s.Lectures)
                 .HasForeignKey(s => s.SessionId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Notification>()
+                .HasIndex(n => n.SendDate);
 
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.Event).WithMany()

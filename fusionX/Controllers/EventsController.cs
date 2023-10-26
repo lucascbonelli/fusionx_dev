@@ -1,5 +1,6 @@
 ﻿using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -39,7 +40,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> CreateEvent(EventDtoCreate eventItem)
         {
             var createdEvent = await _service.CreateEventAsync(eventItem);
@@ -47,7 +48,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> UpdateEvent(uint id,EventDtoUpdate eventItem)
         {
             if (id != eventItem.Id)
@@ -72,7 +73,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
         public async Task<IActionResult> DeleteEvent(uint id)
         {
             await _service.DeleteEventAsync(id);

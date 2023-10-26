@@ -1,5 +1,6 @@
 ﻿using EvenTech.dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult<LocationDto?>> GetLocationById(uint id)
         {
             var location = await _service.GetLocationById(id);
@@ -31,7 +32,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> CreateLocation(LocationDtoInsert request)
         {
             try
@@ -46,7 +47,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> UpdateLocation(uint id, LocationDtoUpdate request)
         {
             try
@@ -61,7 +62,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = UserRoles.Company)]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<ActionResult> DeleteLocation(uint id)
         {
             try
@@ -73,6 +74,19 @@ namespace EvenTech.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpGet("ZipCode/{ZipCode}")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
+        public async Task<ActionResult<LocationDto?>> GetLocationByZipCode(uint ZipCode)
+        {
+            var location = await _service.GetLocationByZipCode(ZipCode);
+            if (location == null)
+            {
+                return NotFound("Localização não encontrada!");
+            }
+
+            return Ok(location);
         }
 
     }

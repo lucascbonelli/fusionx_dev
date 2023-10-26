@@ -1,6 +1,7 @@
 using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 
 namespace EvenTech.Services
@@ -10,8 +11,8 @@ namespace EvenTech.Services
         private readonly DataContext _context;
 
         private readonly string[] _allowCreateRoleList = {
-            UserRoles.Company,
-            UserRoles.User,
+            UserConstraints.Roles.Company,
+            UserConstraints.Roles.User,
         };
 
         public UserService(DataContext context)
