@@ -14,7 +14,6 @@ namespace EvenTech.Data
         public DbSet<Lecture> Lectures { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
