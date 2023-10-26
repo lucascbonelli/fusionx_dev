@@ -38,14 +38,14 @@ namespace EvenTech.Services
             return eventModel;
         }
 
-        public async Task UpdateEventAsync(uint id,EventDtoUpdate eventDtoUpdateItem)
+        public async Task UpdateEventAsync(uint id, EventDtoUpdate eventDtoUpdateItem)
         {
             var existingEvent = await _context.Events.FindAsync(id);
             if (existingEvent == null)
             {
                 throw new InvalidOperationException($"Event with ID {id} not found.");
             }
-            ConvertToModel.ToModel(existingEvent,eventDtoUpdateItem);
+            ConvertToModel.ToModel(existingEvent, eventDtoUpdateItem);
             await _context.SaveChangesAsync();
         }
 

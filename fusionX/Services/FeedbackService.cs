@@ -2,11 +2,6 @@
 using EvenTech.Dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EvenTech.Services
 {
