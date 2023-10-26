@@ -1,6 +1,6 @@
-﻿using hackweek_backend.Models;
+﻿using EvenTech.Models;
 
-namespace hackweek_backend.Data
+namespace EvenTech.Data
 {
     public class DataContext : DbContext
     {

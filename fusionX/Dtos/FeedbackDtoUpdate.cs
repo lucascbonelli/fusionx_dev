@@ -1,4 +1,4 @@
-﻿namespace hackweek_backend.dtos
+﻿namespace EvenTech.Dtos
 {
     public class FeedbackDtoUpdate
     {

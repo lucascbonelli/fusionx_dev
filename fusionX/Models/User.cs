@@ -1,4 +1,4 @@
-﻿namespace hackweek_backend.Models
+﻿namespace EvenTech.Models
 {
     public class User
     {
