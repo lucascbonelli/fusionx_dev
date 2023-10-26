@@ -80,7 +80,7 @@ namespace EvenTech.Services
             }
 
             var bookedCapacity = await _context.Attendances
-                .CountAsync(a => a.LectureId == sessionId && a.Status == "Confirmado");
+                .CountAsync(a => a.SessionId == sessionId && a.Status == "Confirmado");
 
             var availableCapacity = session.Capacity - bookedCapacity;
             return availableCapacity;
