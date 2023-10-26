@@ -1,9 +1,9 @@
 ﻿using EvenTech.Data;
+using EvenTech.Dtos;
 using EvenTech.Models;
-using hackweek_backend.Dtos;
-using hackweek_backend.Services.Interfaces;
+using EvenTech.Services.Interfaces;
 
-namespace hackweek_backend.Services
+namespace EvenTech.Services
 {
     public class LectureService : ILectureService
     {
