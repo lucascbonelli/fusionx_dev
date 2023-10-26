@@ -25,7 +25,7 @@ namespace EvenTech.Services
             var attendanceModel = new Attendance
             {
                 Status = request.Status,
-                LectureId = request.LectureId,
+                SessionId = request.SessionId,
                 UserId = request.UserId
             };
 
@@ -43,7 +43,7 @@ namespace EvenTech.Services
             }
 
             attendance.Status = request.Status;
-            attendance.LectureId = request.LectureId;
+            attendance.SessionId = request.SessionId;
 
             await _context.SaveChangesAsync();
         }
@@ -74,7 +74,7 @@ namespace EvenTech.Services
         public async Task<IEnumerable<AttendanceDto>> GetAttendancesByEventDayId(uint eventDayId)
         {
             var attendances = await _context.Attendances
-                .Where(a => a.LectureId == eventDayId)
+                .Where(a => a.SessionId == eventDayId)
                 .Select(a => new AttendanceDto(a))
                 .ToListAsync();
 
@@ -84,7 +84,7 @@ namespace EvenTech.Services
         public async Task<int> GetTotalConfirmedAttendances(uint eventId)
         {
             var totalConfirmedAttendances = await _context.Attendances
-                .Where(a => a.LectureId == eventId && a.Status == "Confirmado")
+                .Where(a => a.SessionId == eventId && a.Status == "Confirmado")
                 .CountAsync();
 
             return totalConfirmedAttendances;

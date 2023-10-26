@@ -6,14 +6,14 @@ namespace EvenTech.dtos
     {
         public uint Id { get; set; }
         public string Status { get; set; } = string.Empty;
-        public uint LectureId { get; set; }
+        public uint SessionId { get; set; }
         public uint UserId { get; set; }
 
         public AttendanceDto(Attendance attendance)
         {
             Id = attendance.Id;
             Status = attendance.Status;
-            LectureId = attendance.LectureId;
+            SessionId = attendance.SessionId;
             UserId = attendance.UserId;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using System.Data;
 
@@ -9,10 +10,12 @@ namespace EvenTech.Services
     public class NotificationService : INotificationService
     {
         private readonly DataContext _context;
+        private readonly IFeedbackService _feedback;
 
-        public NotificationService(DataContext context)
+        public NotificationService(DataContext context, IFeedbackService feedback)
         {
             _context = context;
+            _feedback = feedback;
         }
 
         public async Task<NotificationDto?> GetNotificationByIdAsync(uint id)
@@ -78,6 +81,8 @@ namespace EvenTech.Services
 
         public async Task<IEnumerable<NotificationDtoGetUser>> GetNotificationsByUser(uint idUser)
         {
+            await UpdateFeedback(idUser);
+
             return await _context.Feedbacks
                 .Where(f => f.UserId == idUser)
                 .Include(f => f.Notification)
@@ -88,6 +93,8 @@ namespace EvenTech.Services
 
         public async Task<IEnumerable<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser)
         {
+            await UpdateFeedback(idUser);
+
             return await _context.Feedbacks
                 .Where(f => f.UserId == idUser)
                 .Include(f => f.User)
@@ -96,6 +103,56 @@ namespace EvenTech.Services
                 .Select(f => f.Notification).OfType<Notification>()
                 .Select(n => new NotificationDtoGetUser(n))
                 .ToListAsync();
+        }
+
+        private async Task UpdateFeedback(uint idUser)
+        {
+            var events = await _context.Attendances
+                .Include(a => a.Session)
+                .Where(a => a.UserId == idUser)
+                .Select(a => a.Session).OfType<Session>()
+                .Select(s => s.EventId)
+                .Distinct().ToListAsync();
+
+            var notifications = await _context.Notifications
+                .Include(n => n.Event)
+                .Where(n => (events.Contains(n.EventId)) && (n.Event != null) && (n.Event.LastNotify < n.SendDate))
+                .ToListAsync();
+
+            notifications.ForEach(notification =>
+            {
+                var users = GetUsersByRecipient(notification.EventId, notification.Recipient);
+
+                users.ForEach(idUser =>
+                {
+                    _feedback.CreateFeedback(new FeedbackDto
+                    {
+                        Date = notification.SendDate,
+                        NotificationId = notification.Id,
+                        UserId = idUser,
+                    });
+                });
+            });
+        }
+
+        private List<uint> GetUsersByRecipient(uint idEvent, int recipient)
+        {
+            return _context.Attendances
+                .Include(a => a.Session)
+                .Where(a => (a.Session != null) && (a.Session.EventId == idEvent))
+                .Select(a => a.UserId)
+                .Distinct()
+                .ToList();
+        }
+
+        public async Task<IEnumerable<NotificationTypeDto>> GetAllNotificationTypes()
+        {
+            return await Task.Run(() => NotificationConstraints.Types.Select(nt => new NotificationTypeDto(nt)));
+        }
+
+        public async Task<IEnumerable<NotificationRecipientDto>> GetAllNotificationRecipients()
+        {
+            return await Task.Run(() => NotificationConstraints.Recipients.Select(nr => new NotificationRecipientDto(nr)));
         }
     }
 }

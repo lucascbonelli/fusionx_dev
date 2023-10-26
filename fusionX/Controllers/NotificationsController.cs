@@ -110,5 +110,19 @@ namespace EvenTech.Controllers
 
             return Ok(await _service.GetUnreadNotifications(idUser));
         }
+
+        [HttpGet("types")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<NotificationRecipientDto>>> GetAllNotificationTypes()
+        {
+            return Ok(await _service.GetAllNotificationTypes());
+        }
+
+        [HttpGet("recipients")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<NotificationRecipientDto>>> GetAllNotificationRecipients()
+        {
+            return Ok(await _service.GetAllNotificationRecipients());
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace EvenTech.Services.Interfaces
         Task<IEnumerable<NotificationDtoGetUser>> GetNotificationsByUser(uint idUser);
         Task<IEnumerable<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser);
 
+        Task<IEnumerable<NotificationTypeDto>> GetAllNotificationTypes();
+        Task<IEnumerable<NotificationRecipientDto>> GetAllNotificationRecipients();
     }
 }
