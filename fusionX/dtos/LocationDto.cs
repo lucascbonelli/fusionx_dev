@@ -1,5 +1,5 @@
-﻿using hackweek_backend.Models;
-namespace hackweek_backend.dtos
+﻿using EvenTech.Models;
+namespace EvenTech.dtos
 {
     public class LocationDto
     {
