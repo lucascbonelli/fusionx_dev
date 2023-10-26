@@ -7,7 +7,7 @@ namespace EvenTech.Utils
     {
         public static Event ToModel(EventDtoCreate dto)
         {
-            return new Event
+            var @event = new Event
             {
                 Title = dto.Title,
                 Description = dto.Description,
@@ -15,10 +15,44 @@ namespace EvenTech.Utils
                 EndDate = dto.EndDate,
                 BannerImage = dto.BannerImage,
                 UserId = dto.UserId,
-                Tags = dto.Tags,
-                Sessions = dto.Sessions,
-                EventImages = dto.EventImages
             };
+
+            if (dto.TagIds != null)
+            {
+                @event.Tags = dto.TagIds.Select(id => new EventTag
+                {
+                    TagId = id,
+                    EventId = @event.Id,
+                }).ToList();
+            }
+
+            if (dto.Sessions != null)
+            {
+                @event.Sessions = dto.Sessions.Select(sessionDto => new Session
+                {
+                    Capacity = sessionDto.Capacity,
+                    LocationId = sessionDto.LocationId,
+                    EventId = @event.Id,
+                    Lectures = sessionDto.Lectures?.Select(lectureDto => new Lecture
+                    {
+                        Title = lectureDto.Title,
+                        Description = lectureDto.Description,
+                        BeginDate = lectureDto.BeginDate,
+                        EndDate = lectureDto.EndDate,
+                    }).ToList()
+                }).ToList();
+            }
+
+            if (dto.EventImages != null)
+            {
+                @event.EventImages = dto.EventImages.Select((image,index) => new EventImage
+                {
+                    EventId = @event.Id,
+                    Position = index,
+                    Image = image
+                }).ToList();
+            }
+            return @event;
         }
 
         public static void ToModel(Event existingEvent, EventDtoUpdate dto)
