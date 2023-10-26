@@ -1,6 +1,6 @@
-using hackweek_backend.Dtos;
+using EvenTech.Dtos;
 
-namespace hackweek_backend.Services.Interfaces
+namespace EvenTech.Services.Interfaces
 {
     public interface IUserService
     {
@@ -10,8 +10,5 @@ namespace hackweek_backend.Services.Interfaces
         Task UpdateUser(uint id, UserDtoUpdate request);
 
         Task<UserDto?> GetUserByEmail(string email);
-
-        Task<string> RedefinePassword(uint id);
-        Task<IEnumerable<UserDto>> GetUsersEventByRole(string role);
     }
 }

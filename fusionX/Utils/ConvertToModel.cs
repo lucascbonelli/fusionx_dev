@@ -1,8 +1,7 @@
-﻿using hackweek_backend.dtos;
-using hackweek_backend.Dtos;
-using hackweek_backend.Models;
+﻿using EvenTech.Dtos;
+using EvenTech.Models;
 
-namespace hackweek_backend.Utils
+namespace EvenTech.Utils
 {
     public class ConvertToModel
     {

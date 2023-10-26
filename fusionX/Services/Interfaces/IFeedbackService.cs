@@ -1,6 +1,6 @@
-﻿using hackweek_backend.dtos;
+﻿using EvenTech.Dtos;
 
-namespace hackweek_backend.Services.Interfaces
+namespace EvenTech.Services.Interfaces
 {
     public interface IFeedbackService
     {

@@ -1,7 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
-using hackweek_backend.Data;
-using hackweek_backend.Services;
-using hackweek_backend.Services.Interfaces;
+using EvenTech.Data;
+using EvenTech.Services;
+using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -22,7 +22,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
-    config.SwaggerDoc("v1", new() { Title = "hackweek_backend", Version = "v1" });
+    config.SwaggerDoc("v1", new() { Title = "EvenTech", Version = "v1" });
 
     config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -57,6 +57,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserTokenService, UserTokenService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();    
