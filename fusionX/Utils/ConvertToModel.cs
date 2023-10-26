@@ -21,7 +21,7 @@ namespace EvenTech.Utils
             };
         }
 
-        public static void ToModel(Event existingEvent,EventDtoUpdate dto)
+        public static void ToModel(Event existingEvent, EventDtoUpdate dto)
         {
             existingEvent.Title = dto.Title;
             existingEvent.Description = dto.Description;
@@ -39,7 +39,7 @@ namespace EvenTech.Utils
                 Email = dto.Email,
                 IsEmailConfirmed = dto.IsEmailConfirmed,
                 Name = dto.Name,
-                VerificationDate = dto.Verified ? DateTime.Now : (DateTime?) null,
+                VerificationDate = dto.Verified ? DateTime.Now : (DateTime?)null,
                 Role = dto.Role
             };
         }

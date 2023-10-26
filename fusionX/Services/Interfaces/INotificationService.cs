@@ -1,5 +1,4 @@
 ﻿using EvenTech.Dtos;
-using EvenTech.Models;
 
 namespace EvenTech.Services.Interfaces
 {
