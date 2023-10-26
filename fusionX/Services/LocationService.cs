@@ -2,9 +2,6 @@
 using EvenTech.dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.IO;
-using System.Reflection.Emit;
 
 namespace EvenTech.Services
 {
@@ -35,7 +32,7 @@ namespace EvenTech.Services
                 Street = request.Street,
                 Number = request.Number,
                 Complement = request.Complement,
-             };
+            };
 
             await _context.Locations.AddAsync(locationModel);
             await _context.SaveChangesAsync();
@@ -53,7 +50,7 @@ namespace EvenTech.Services
             location.State = request.State;
             location.City = request.City;
             location.Disctrict = request.Disctrict;
-            location.Street = request.Street;   
+            location.Street = request.Street;
             location.Number = request.Number;
             location.Complement = request.Complement;
 

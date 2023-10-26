@@ -13,7 +13,7 @@ namespace EvenTech.dtos
         public int Number { get; set; }
         public string Complement { get; set; } = string.Empty;
 
-        public LocationDto(Location location) 
+        public LocationDto(Location location)
         {
             Id = location.Id;
             ZipCode = location.ZipCode;
