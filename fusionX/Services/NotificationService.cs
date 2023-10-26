@@ -1,9 +1,7 @@
-﻿using Azure;
-using EvenTech.Data;
+﻿using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
-using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace EvenTech.Services

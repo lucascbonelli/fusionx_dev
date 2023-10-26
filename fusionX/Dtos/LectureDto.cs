@@ -1,4 +1,4 @@
-﻿using hackweek_backend.Models;
+﻿using EvenTech.Models;
 
 public class LectureDto
 {

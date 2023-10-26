@@ -1,5 +1,4 @@
 ﻿using EvenTech.Dtos;
-using EvenTech.Models;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +43,7 @@ namespace EvenTech.Controllers
         {
             if (id != eventItem.Id)
                 return BadRequest();
-            await _service.UpdateEventAsync(id,eventItem);
+            await _service.UpdateEventAsync(id, eventItem);
             return NoContent();
         }
 
