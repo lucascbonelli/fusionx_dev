@@ -1,4 +1,4 @@
-﻿using EvenTech.Dtos;
+using EvenTech.Dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +26,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> GetTagById(uint id)
         {
             var tag = await _service.GetTagByIdAsync(id);
-            if (tag == null)
+            if(tag == null)
             {
                 return NotFound();
             }
@@ -36,7 +36,7 @@ namespace EvenTech.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -47,7 +47,7 @@ namespace EvenTech.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
-            if (id != tag.Id)
+            if(id != tag.Id)
             {
                 return BadRequest();
             }
@@ -59,7 +59,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> DeleteTag(uint id)
         {
             var tag = await _service.GetTagByIdAsync(id);
-            if (tag == null)
+            if(tag == null)
             {
                 return NotFound();
             }
