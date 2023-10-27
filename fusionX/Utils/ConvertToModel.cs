@@ -45,7 +45,7 @@ namespace EvenTech.Utils
 
             if (dto.EventImages != null)
             {
-                @event.EventImages = dto.EventImages.Select((image,index) => new EventImage
+                @event.EventImages = dto.EventImages.Select((image, index) => new EventImage
                 {
                     EventId = @event.Id,
                     Position = index,
