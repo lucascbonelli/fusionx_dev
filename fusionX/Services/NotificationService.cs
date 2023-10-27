@@ -11,11 +11,13 @@ namespace EvenTech.Services
     {
         private readonly DataContext _context;
         private readonly IFeedbackService _feedback;
+        private readonly IUserService _user;
 
-        public NotificationService(DataContext context, IFeedbackService feedback)
+        public NotificationService(DataContext context, IFeedbackService feedback, IUserService user)
         {
             _context = context;
             _feedback = feedback;
+            _user = user;
         }
 
         public async Task<NotificationDto?> GetNotificationByIdAsync(uint id)
@@ -85,35 +87,49 @@ namespace EvenTech.Services
         {
             await UpdateFeedback(idUser);
 
-            return await _context.Feedbacks
+            var lastAccess = DateTime.Now;
+            var user = await _user.GetUserById(idUser);
+            if (user == null) return Enumerable.Empty<NotificationDtoGetUser>();
+
+            var feedbacks = await _context.Feedbacks
                 .Where(f => f.UserId == idUser)
                 .Include(f => f.Notification)
                 .Select(f => f.Notification).OfType<Notification>()
-                .Select(n => new NotificationDtoGetUser(n))
+                .Select(n => new NotificationDtoGetUser(n, user.LastAccess))
                 .ToListAsync();
+
+            await _user.UpdateLastAccess(idUser, lastAccess);
+
+            return feedbacks;
         }
 
         public async Task<IEnumerable<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser)
         {
             await UpdateFeedback(idUser);
 
-            return await _context.Feedbacks
-                .Where(f => f.UserId == idUser)
-                .Include(f => f.User)
-                .Where(f => f.Date >= (f.User == null ? f.Date : f.User.LastAccess))
+            var lastAccess = DateTime.Now;
+            var user = await _user.GetUserById(idUser);
+            if (user == null) return Enumerable.Empty<NotificationDtoGetUser>();
+
+            var feedbacks = await _context.Feedbacks
+                .Where(f => (f.UserId == idUser) && f.Date >= user.LastAccess)
                 .Include(f => f.Notification)
                 .Select(f => f.Notification).OfType<Notification>()
-                .Select(n => new NotificationDtoGetUser(n))
+                .Select(n => new NotificationDtoGetUser(n, user.LastAccess))
                 .ToListAsync();
+
+            await _user.UpdateLastAccess(idUser, lastAccess);
+
+            return feedbacks;
         }
 
         private async Task UpdateFeedback(uint idUser)
         {
             var events = await _context.Attendances
-                .Include(a => a.Session)
                 .Where(a => a.UserId == idUser)
+                .Include(a => a.Session)
+                .ThenInclude(s => s!.Event)
                 .Select(a => a.Session).OfType<Session>()
-                .Include(s => s.Event)
                 .Select(s => s.Event).OfType<Event>()
                 .Distinct().ToListAsync();
 
@@ -123,7 +139,7 @@ namespace EvenTech.Services
                 var initTime = DateTime.Now;
 
                 var notifications = await _context.Notifications
-                    .Where(n => (n.EventId == @event.Id) && (n.SendDate >= @event.LastNotify))
+                    .Where(n => (n.EventId == @event.Id) && (n.SendDate.CompareTo(@event.LastNotify) >= 0))
                     .ToListAsync();
 
                 if (notifications.Any())
