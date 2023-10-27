@@ -6,7 +6,7 @@ namespace EvenTech.Services.Interfaces
     public interface IEventManagerService
     {
         Task<IEnumerable<EventManager>> GetAllAsync();
-        Task<EventManager> GetByIdAsync(int id);
+        Task<EventManager?> GetByIdAsync(int id);
         Task<EventManager> CreateAsync(EventManagerDtoCreate eventManagerDtoCreate);
         Task DeleteAsync(int id);
     }

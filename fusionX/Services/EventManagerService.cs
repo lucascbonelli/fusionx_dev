@@ -20,7 +20,7 @@ namespace EvenTech.Services
             return await _context.EventManagers.ToListAsync();
         }
 
-        public async Task<EventManager> GetByIdAsync(int id)
+        public async Task<EventManager?> GetByIdAsync(int id)
         {
             return await _context.EventManagers.FindAsync(id);
         }
