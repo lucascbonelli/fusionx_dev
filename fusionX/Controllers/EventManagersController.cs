@@ -1,5 +1,6 @@
 ﻿using EvenTech.dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var eventManagers = await _service.GetAllAsync();
@@ -26,7 +27,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> GetById(int id)
         {
             var eventManager = await _service.GetByIdAsync(id);
@@ -35,6 +36,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> Create(EventManagerDtoCreate eventManagerDtoCreate)
         {
             var createdEventManager = await _service.CreateAsync(eventManagerDtoCreate);
@@ -42,6 +44,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> Update(int id, EventManager eventManager)
         {
             if(id != eventManager.Id) return BadRequest();
@@ -50,6 +53,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
