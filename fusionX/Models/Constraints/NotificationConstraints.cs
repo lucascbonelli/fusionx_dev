@@ -10,6 +10,7 @@ namespace EvenTech.Models.Constraints
             new NotificationType() { Id = 4, Description = "Texto livre" },
             new NotificationType() { Id = 5, Description = "Avaliação por palestra" },
         };
+        public static readonly int[] OverviewTypeIds = { 3, 4, 5 };
 
         public static readonly ICollection<NotificationRecipient> Recipients = new List<NotificationRecipient>
         {

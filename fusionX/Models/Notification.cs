@@ -11,5 +11,7 @@
 
         public uint EventId { get; set; }
         public Event? Event { get; set; }
+
+        public ICollection<Feedback>? Feedbacks { get; set; }
     }
 }
