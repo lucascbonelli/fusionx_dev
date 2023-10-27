@@ -22,7 +22,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> GetAll()
         {
             var eventManagers = await _service.GetAllAsync();
-            if(eventManagers is null || eventManagers.Any())
+            if(eventManagers is null || !eventManagers.Any())
             {
                 return NotFound("No one was found!");
             }
@@ -31,7 +31,7 @@ namespace EvenTech.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(uint id)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace EvenTech.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(uint id)
         {
             try
             {

@@ -20,7 +20,7 @@ namespace EvenTech.Services
             return await _context.EventManagers.ToListAsync();
         }
 
-        public async Task<EventManager?> GetByIdAsync(int id)
+        public async Task<EventManager?> GetByIdAsync(uint id)
         {
             return await _context.EventManagers.FindAsync(id);
         }
@@ -34,7 +34,7 @@ namespace EvenTech.Services
             return eventManager;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(uint id)
         {
             var eventManager = await _context.EventManagers.FindAsync(id);
             _context.EventManagers.Remove(eventManager);
