@@ -1,6 +1,4 @@
-﻿using EvenTech.Models;
-
-namespace EvenTech.Dtos
+﻿namespace EvenTech.Dtos
 {
     public class EventDtoLectureCreate
     {

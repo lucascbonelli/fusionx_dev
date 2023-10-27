@@ -1,5 +1,4 @@
 ﻿using EvenTech.dtos;
-using EvenTech.Models;
 using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +73,19 @@ namespace EvenTech.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpGet("ZipCode/{ZipCode}")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
+        public async Task<ActionResult<LocationDto?>> GetLocationByZipCode(uint ZipCode)
+        {
+            var location = await _service.GetLocationByZipCode(ZipCode);
+            if (location == null)
+            {
+                return NotFound("Localização não encontrada!");
+            }
+
+            return Ok(location);
         }
 
     }

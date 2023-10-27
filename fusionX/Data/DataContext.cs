@@ -9,12 +9,12 @@ namespace EvenTech.Data
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventImage> EventImages { get; set; }
+        public DbSet<EventManager> EventManagers { get; set; }
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Lecture> Lectures { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<NotificationTemplate> NotificationTemplates { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
@@ -33,6 +33,11 @@ namespace EvenTech.Data
             modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.User).WithMany()
                 .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.EventManager).WithMany()
+                .HasForeignKey(a => a.EventManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Event>()
@@ -57,6 +62,16 @@ namespace EvenTech.Data
                 .HasOne(et => et.Event).WithMany(e => e.Tags)
                 .HasForeignKey(et => et.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EventManager>()
+                .HasOne(e => e.User).WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EventManager>()
+                .HasOne(e => e.Event).WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Notification).WithMany()

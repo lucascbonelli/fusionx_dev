@@ -1,105 +1,78 @@
-﻿using EvenTech.Data;
-using EvenTech.Dtos;
-using EvenTech.Models;
+﻿using EvenTech.Dtos;
 using EvenTech.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EvenTech.Controllers
 {
-    public class LecturesService : ILectureService
+    [Route("api/lectures")]
+    [ApiController]
+    public class LectureController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly ILectureService _service;
 
-        public LecturesService(DataContext context)
+        public LectureController(ILectureService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        public async Task<LectureDto?> GetLectureById(uint id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<LectureDto>> GetLectureById(uint id)
         {
-            var lecture = await _context.Lectures.FindAsync(id);
-            return lecture != null ? new LectureDto(lecture) : null;
-        }
-
-        public async Task CreateLecture(LectureDto request)
-        {
-            var lectureModel = new Lecture
-            {
-                Title = request.Title,
-                Description = request.Description,
-                BeginDate = request.BeginDate,
-                EndDate = request.EndDate,
-                SessionId = request.SessionId
-            };
-
-            await _context.Lectures.AddAsync(lectureModel);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateLecture(uint id, LectureDtoUpdate request)
-        {
-            var lecture = await _context.Lectures.FindAsync(id);
-
+            var lecture = await _service.GetLectureById(id);
             if (lecture == null)
             {
-                throw new Exception("Palestra não encontrada!");
+                return NotFound();
             }
-
-            lecture.Title = request.Title;
-            lecture.Description = request.Description;
-            lecture.BeginDate = request.BeginDate;
-            lecture.EndDate = request.EndDate;
-
-            await _context.SaveChangesAsync();
+            return Ok(lecture);
         }
 
-        public async Task DeleteLecture(uint id)
+        [HttpPost]
+        public async Task<ActionResult> CreateLecture([FromBody] LectureDto request)
         {
-            var lecture = await _context.Lectures.FindAsync(id);
+            await _service.CreateLecture(request);
+            return CreatedAtAction("CreateLecture", new { id = request.Id }, request);
+        }
 
-            if (lecture == null)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateLecture(uint id, [FromBody] LectureDtoUpdate request)
+        {
+            try
             {
-                throw new Exception("Palestra não encontrada!");
+                await _service.UpdateLecture(id, request);
+                return NoContent();
             }
-
-            _context.Lectures.Remove(lecture);
-            await _context.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        public async Task<IEnumerable<LectureDto>> GetLecturesBySessionId(uint sessionId)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteLecture(uint id)
         {
-            var lectures = await _context.Lectures
-                .Where(lecture => lecture.SessionId == sessionId)
-                .Select(lecture => new LectureDto
-                {
-                    Id = lecture.Id,
-                    Title = lecture.Title,
-                    Description = lecture.Description,
-                    BeginDate = lecture.BeginDate,
-                    EndDate = lecture.EndDate,
-                    SessionId = lecture.SessionId
-                })
-                .ToListAsync();
-
-            return lectures;
+            try
+            {
+                await _service.DeleteLecture(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        public async Task<IEnumerable<LectureDto>> GetLecturesByEventId(uint eventId)
+        [HttpGet("bySession/{sessionId}")]
+        public async Task<ActionResult<IEnumerable<LectureDto>>> GetLecturesBySessionId(uint sessionId)
         {
-            var lectures = await _context.Lectures
-                .Include(lecture => lecture.Session)
-                .Where(lecture => (lecture.Session != null) && (lecture.Session.EventId == eventId))
-                .Select(lecture => new LectureDto
-                {
-                    Id = lecture.Id,
-                    Title = lecture.Title,
-                    Description = lecture.Description,
-                    BeginDate = lecture.BeginDate,
-                    EndDate = lecture.EndDate,
-                    SessionId = lecture.SessionId
-                })
-                .ToListAsync();
+            var lectures = await _service.GetLecturesBySessionId(sessionId);
+            return Ok(lectures);
+        }
 
-            return lectures;
+        [HttpGet("byEvent/{eventId}")]
+        public async Task<ActionResult<IEnumerable<LectureDto>>> GetLecturesByEventId(uint eventId)
+        {
+            var lectures = await _service.GetLecturesByEventId(eventId);
+            return Ok(lectures);
         }
     }
 }
