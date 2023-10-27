@@ -13,7 +13,7 @@ namespace EvenTech.Models
         public uint UserId { get; set; }
         public User? User { get; set; }
 
-        public uint EventManagerId { get; set; }
-        public virtual EventManager? EventManager { get; set; }
+        public uint? EventManagerId { get; set; }
+        public EventManager? EventManager { get; set; }
     }
 }
