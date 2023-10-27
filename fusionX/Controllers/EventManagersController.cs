@@ -1,5 +1,7 @@
-﻿using EvenTech.Models;
+﻿using EvenTech.dtos;
+using EvenTech.Models;
 using EvenTech.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvenTech.Controllers
@@ -16,6 +18,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             var eventManagers = await _service.GetAllAsync();
@@ -23,6 +26,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var eventManager = await _service.GetByIdAsync(id);
@@ -31,9 +35,9 @@ namespace EvenTech.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EventManager eventManager)
+        public async Task<IActionResult> Create(EventManagerDtoCreate eventManagerDtoCreate)
         {
-            var createdEventManager = await _service.CreateAsync(eventManager);
+            var createdEventManager = await _service.CreateAsync(eventManagerDtoCreate);
             return CreatedAtAction(nameof(GetById), new { id = createdEventManager.Id }, createdEventManager);
         }
 
