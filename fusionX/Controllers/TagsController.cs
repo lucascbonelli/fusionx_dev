@@ -30,7 +30,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> GetTagById(uint id)
         {
             var tag = await _service.GetTagByIdAsync(id);
-            if(tag == null)
+            if (tag == null)
             {
                 return NotFound();
             }
@@ -41,7 +41,7 @@ namespace EvenTech.Controllers
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -53,7 +53,7 @@ namespace EvenTech.Controllers
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
-            if(id != tag.Id)
+            if (id != tag.Id)
             {
                 return BadRequest();
             }
@@ -66,7 +66,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> DeleteTag(uint id)
         {
             var tag = await _service.GetTagByIdAsync(id);
-            if(tag == null)
+            if (tag == null)
             {
                 return NotFound();
             }

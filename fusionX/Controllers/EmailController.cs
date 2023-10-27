@@ -8,11 +8,11 @@ namespace EvenTech.Controllers
     [ApiController]
     public class EmailController : ControllerBase
     {
-        private readonly IEmailService _emailService;
+        private readonly IEmailService _service;
 
-        public EmailController(IEmailService emailService)
+        public EmailController(IEmailService service)
         {
-            _emailService = emailService;
+            _service = service;
         }
 
         [HttpPost("send/{email}")]
@@ -21,7 +21,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                await _emailService.SendConfirmationEmail(email);
+                await _service.SendConfirmationEmail(email);
                 return Ok();
             }
             catch (Exception e)
@@ -36,7 +36,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                await _emailService.FindToken(token);
+                await _service.FindToken(token);
                 return Ok();
             }
             catch (Exception e)
@@ -51,7 +51,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                await _emailService.ConfirmEmail(token, password);
+                await _service.ConfirmEmail(token, password);
                 return Ok();
             }
             catch (Exception e)
