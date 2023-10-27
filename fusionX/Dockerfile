@@ -12,8 +12,8 @@ USER appuser
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 ARG configuration=Release
 WORKDIR /src
-COPY ["fusionX/EvenTech.csproj", "fusionX/"]
-RUN dotnet restore "fusionX/EvenTech.csproj"
+COPY ["EvenTech.csproj", "fusionX/"]
+RUN dotnet restore "EvenTech.csproj"
 COPY . .
 WORKDIR "/src/fusionX"
 RUN dotnet build "EvenTech.csproj" -c $configuration -o /app/build
