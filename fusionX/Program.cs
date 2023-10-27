@@ -55,6 +55,7 @@ builder.Services.AddSwaggerGen(config =>
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IEventManagerService, EventManagerService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ILectureService, LectureService>();
