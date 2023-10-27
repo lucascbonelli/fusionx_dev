@@ -1,12 +1,8 @@
 ﻿using EvenTech.Data;
-using EvenTech.dtos;
 using EvenTech.Dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Linq;
 
 namespace EvenTech.Services
 {

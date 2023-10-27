@@ -1,9 +1,6 @@
 ﻿using EvenTech.Dtos;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EvenTech.Controllers
 {
@@ -11,17 +8,17 @@ namespace EvenTech.Controllers
     [ApiController]
     public class SessionsController : ControllerBase
     {
-        private readonly ISessionService _sessionService;
+        private readonly ISessionService _service;
 
-        public SessionsController(ISessionService sessionService)
+        public SessionsController(ISessionService service)
         {
-            _sessionService = sessionService;
+            _service = service;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<SessionDto>> GetSessionDayById(uint id)
         {
-            var session = await _sessionService.GetSessionDayById(id);
+            var session = await _service.GetSessionDayById(id);
             if (session == null)
             {
                 return NotFound();
@@ -32,7 +29,7 @@ namespace EvenTech.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSession([FromBody] SessionDtoInsert request)
         {
-            var session = await _sessionService.CreateSession(request);
+            var session = await _service.CreateSession(request);
             return CreatedAtAction("CreateSession", new { id = session.Id }, session);
         }
 
@@ -41,7 +38,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                await _sessionService.UpdateSession(id, request);
+                await _service.UpdateSession(id, request);
                 return NoContent();
             }
             catch (Exception ex)
@@ -55,7 +52,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                await _sessionService.DeleteSession(id);
+                await _service.DeleteSession(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -67,7 +64,7 @@ namespace EvenTech.Controllers
         [HttpGet("byEvent/{eventId}")]
         public async Task<ActionResult<IEnumerable<SessionDto>>> GetSessionByEventId(uint eventId)
         {
-            var sessions = await _sessionService.GetSessionByEventId(eventId);
+            var sessions = await _service.GetSessionByEventId(eventId);
             return Ok(sessions);
         }
 
@@ -76,7 +73,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                var availableCapacity = await _sessionService.GetAvailableCapacity(id);
+                var availableCapacity = await _service.GetAvailableCapacity(id);
                 return Ok(availableCapacity);
             }
             catch (Exception ex)

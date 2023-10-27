@@ -1,12 +1,8 @@
-﻿using EvenTech.dtos;
-using EvenTech.Dtos;
-using EvenTech.Models;
+﻿using EvenTech.Dtos;
 using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace EvenTech.Controllers
 {

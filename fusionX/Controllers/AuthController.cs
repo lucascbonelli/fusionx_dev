@@ -9,11 +9,11 @@ namespace EvenTech.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _loginService;
+        private readonly IAuthService _service;
 
-        public AuthController(IAuthService loginService)
+        public AuthController(IAuthService service)
         {
-            _loginService = loginService;
+            _service = service;
         }
 
         [HttpPost("login")]
@@ -22,7 +22,7 @@ namespace EvenTech.Controllers
         {
             try
             {
-                var token = await _loginService.Login(request);
+                var token = await _service.Login(request);
                 return Ok(token);
             }
             catch (Exception e)

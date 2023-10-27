@@ -43,12 +43,12 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> CreateEvent(EventDtoCreate eventItem)
         {
             var createdEvent = await _service.CreateEventAsync(eventItem);
-            return CreatedAtAction(nameof(GetEventById),new { id = createdEvent.Id },createdEvent);
+            return CreatedAtAction(nameof(GetEventById), new { id = createdEvent.Id }, createdEvent);
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Company)]
-        public async Task<IActionResult> UpdateEvent(uint id,EventDtoUpdate eventItem)
+        public async Task<IActionResult> UpdateEvent(uint id, EventDtoUpdate eventItem)
         {
             if (id != eventItem.Id)
                 return BadRequest();
@@ -61,13 +61,13 @@ namespace EvenTech.Controllers
             if (string.IsNullOrEmpty(claimValue))
                 return BadRequest("User identifier not found.");
 
-            if (!uint.TryParse(claimValue,out var currentUserId))
+            if (!uint.TryParse(claimValue, out var currentUserId))
                 return BadRequest("Invalid user identifier format.");
 
             if (existingEvent.UserId != currentUserId)
                 return Forbid("You don't have permission to update this event.");
 
-            await _service.UpdateEventAsync(id,eventItem);
+            await _service.UpdateEventAsync(id, eventItem);
             return NoContent();
         }
 
