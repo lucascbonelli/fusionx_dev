@@ -34,12 +34,6 @@ namespace EvenTech.Services
             return eventManager;
         }
 
-        public async Task UpdateAsync(EventManager eventManager)
-        {
-            _context.Entry(eventManager).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
         public async Task DeleteAsync(int id)
         {
             var eventManager = await _context.EventManagers.FindAsync(id);

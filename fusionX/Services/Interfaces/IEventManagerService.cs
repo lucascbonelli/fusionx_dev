@@ -8,7 +8,6 @@ namespace EvenTech.Services.Interfaces
         Task<IEnumerable<EventManager>> GetAllAsync();
         Task<EventManager> GetByIdAsync(int id);
         Task<EventManager> CreateAsync(EventManagerDtoCreate eventManagerDtoCreate);
-        Task UpdateAsync(EventManager eventManager);
         Task DeleteAsync(int id);
     }
 }

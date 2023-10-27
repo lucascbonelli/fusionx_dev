@@ -43,15 +43,6 @@ namespace EvenTech.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdEventManager.Id }, createdEventManager);
         }
 
-        [HttpPut("{id}")]
-        [Authorize(Roles = UserConstraints.Roles.Company)]
-        public async Task<IActionResult> Update(int id, EventManager eventManager)
-        {
-            if(id != eventManager.Id) return BadRequest();
-            await _service.UpdateAsync(eventManager);
-            return NoContent();
-        }
-
         [HttpDelete("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
         public async Task<IActionResult> Delete(int id)
