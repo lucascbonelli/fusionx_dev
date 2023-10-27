@@ -9,6 +9,7 @@ namespace EvenTech.Data
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventImage> EventImages { get; set; }
+        public DbSet<EventManager> EventManagers { get; set; }
         public DbSet<EventTag> EventTags { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Lecture> Lectures { get; set; }
@@ -32,6 +33,11 @@ namespace EvenTech.Data
             modelBuilder.Entity<Attendance>()
                 .HasOne(a => a.User).WithMany()
                 .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.EventManager).WithMany()
+                .HasForeignKey(a => a.EventManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Event>()

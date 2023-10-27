@@ -1,4 +1,6 @@
-﻿namespace EvenTech.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EvenTech.Models
 {
     public class Attendance
     {
@@ -10,5 +12,8 @@
 
         public uint UserId { get; set; }
         public User? User { get; set; }
+
+        public int EventManagerId { get; set; }
+        public virtual EventManager? EventManager { get; set; }
     }
 }
