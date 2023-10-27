@@ -113,7 +113,7 @@ namespace EvenTech.Controllers
 
         [HttpGet("types")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<NotificationRecipientDto>>> GetAllNotificationTypes()
+        public async Task<ActionResult<IEnumerable<NotificationTypeDto>>> GetAllNotificationTypes()
         {
             return Ok(await _service.GetAllNotificationTypes());
         }

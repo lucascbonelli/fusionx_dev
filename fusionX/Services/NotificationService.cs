@@ -126,25 +126,28 @@ namespace EvenTech.Services
                     .Where(n => (n.EventId == @event.Id) && (n.SendDate >= @event.LastNotify))
                     .ToListAsync();
 
-                // Update event
-                @event.LastNotify = initTime;
-                await _context.SaveChangesAsync();
-
-                // Loop notifications
-                foreach (var notification in notifications)
+                if (notifications.Any())
                 {
-                    var userIds = await GetUsersByRecipient(notification.EventId, notification.Recipient);
+                    // Update event
+                    @event.LastNotify = initTime;
+                    await _context.SaveChangesAsync();
 
-                    // Loop users
-                    foreach (var userId in userIds)
+                    // Loop notifications
+                    foreach (var notification in notifications)
                     {
-                        // Create feedback
-                        await _feedback.CreateFeedback(new FeedbackDto
+                        var userIds = await GetUsersByRecipient(notification.EventId, notification.Recipient);
+
+                        // Loop users
+                        foreach (var userId in userIds)
                         {
-                            Date = notification.SendDate,
-                            NotificationId = notification.Id,
-                            UserId = userId,
-                        });
+                            // Create feedback
+                            await _feedback.CreateFeedback(new FeedbackDto
+                            {
+                                Date = notification.SendDate,
+                                NotificationId = notification.Id,
+                                UserId = userId,
+                            });
+                        }
                     }
                 }
             }
@@ -152,40 +155,40 @@ namespace EvenTech.Services
 
         private async Task<List<uint>> GetUsersByRecipient(uint idEvent, int recipient)
         {
+            var sessionIds = await _context.Sessions
+                .Where(s => s.EventId == idEvent)
+                .Select(s => s.Id)
+                .ToListAsync();
+
             switch (recipient)
             {
                 case 1: // Todos
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent))
+                        .Where(a => sessionIds.Contains(a.SessionId))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 2: // Presentes
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Confirmado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == FeedbackConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 3: // Ausentes - Todos
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != FeedbackConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 4: // Ausentes - Cancelados
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Cancelado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == FeedbackConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 5: // Ausentes - Sem feedback
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado") && (a.Status != "Cancelado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != FeedbackConstraints.Status.Confirmed) && (a.Status != FeedbackConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
