@@ -1,4 +1,5 @@
-﻿using EvenTech.Dtos;
+﻿using EvenTech.dtos;
+using EvenTech.Dtos;
 using EvenTech.Models;
 
 namespace EvenTech.Utils
@@ -17,7 +18,7 @@ namespace EvenTech.Utils
                 UserId = dto.UserId,
             };
 
-            if (dto.TagIds != null)
+            if(dto.TagIds != null)
             {
                 @event.Tags = dto.TagIds.Select(id => new EventTag
                 {
@@ -26,7 +27,7 @@ namespace EvenTech.Utils
                 }).ToList();
             }
 
-            if (dto.Sessions != null)
+            if(dto.Sessions != null)
             {
                 @event.Sessions = dto.Sessions.Select(sessionDto => new Session
                 {
@@ -43,7 +44,7 @@ namespace EvenTech.Utils
                 }).ToList();
             }
 
-            if (dto.EventImages != null)
+            if(dto.EventImages != null)
             {
                 @event.EventImages = dto.EventImages.Select((image, index) => new EventImage
                 {
@@ -53,6 +54,12 @@ namespace EvenTech.Utils
                 }).ToList();
             }
             return @event;
+        }
+
+        public static void ToModel(EventManager eventManager, EventManagerDtoCreate eventManagerDtoCreate)
+        {
+            eventManager.EventId = eventManagerDtoCreate.EventId;
+            eventManager.UserId = eventManagerDtoCreate.UserId;
         }
 
         public static void ToModel(Event existingEvent, EventDtoUpdate dto)
@@ -72,7 +79,7 @@ namespace EvenTech.Utils
                 Email = dto.Email,
                 IsEmailConfirmed = dto.IsEmailConfirmed,
                 Name = dto.Name,
-                VerificationDate = dto.Verified ? DateTime.Now : (DateTime?)null,
+                VerificationDate = dto.Verified ? DateTime.Now : (DateTime?) null,
                 Role = dto.Role
             };
         }

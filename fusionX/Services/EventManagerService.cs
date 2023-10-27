@@ -1,6 +1,8 @@
 ﻿using EvenTech.Data;
+using EvenTech.dtos;
 using EvenTech.Models;
 using EvenTech.Services.Interfaces;
+using EvenTech.Utils;
 
 namespace EvenTech.Services
 {
@@ -23,8 +25,10 @@ namespace EvenTech.Services
             return await _context.EventManagers.FindAsync(id);
         }
 
-        public async Task<EventManager> CreateAsync(EventManager eventManager)
+        public async Task<EventManager> CreateAsync(EventManagerDtoCreate eventManagerDtoCreate)
         {
+            var eventManager = new EventManager();
+            ConvertToModel.ToModel(eventManager, eventManagerDtoCreate);
             _context.EventManagers.Add(eventManager);
             await _context.SaveChangesAsync();
             return eventManager;
