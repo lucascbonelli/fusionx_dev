@@ -15,7 +15,7 @@ WORKDIR /src
 COPY ["EvenTech.csproj", "fusionX/"]
 RUN dotnet restore "EvenTech.csproj"
 COPY . .
-WORKDIR "/src/fusionX"
+WORKDIR /src
 RUN dotnet build "EvenTech.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
