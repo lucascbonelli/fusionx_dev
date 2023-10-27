@@ -63,6 +63,16 @@ namespace EvenTech.Data
                 .HasForeignKey(et => et.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<EventManager>()
+                .HasOne(e => e.User).WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<EventManager>()
+                .HasOne(e => e.Event).WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Notification).WithMany()
                 .HasForeignKey(f => f.NotificationId)
