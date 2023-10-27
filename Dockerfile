@@ -1,23 +1,30 @@
-# Use a imagem base do .NET Core correspondente à versão desejada
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+# Use the .NET 7.0.401 SDK image as the build environment
+FROM mcr.microsoft.com/dotnet/sdk:7.0.401 AS build
 
-# Define o diretório de trabalho dentro do contêiner
+# Set the working directory in the container
 WORKDIR /app
 
-# Copie o código fonte do seu aplicativo para o contêiner
-COPY . .
-
-# Restaure as dependências do projeto
+# Copy the project file and restore dependencies
+COPY *.csproj ./
 RUN dotnet restore
 
-# Compile o aplicativo
-RUN dotnet build --configuration Release --no-restore
+# Copy the rest of the application code
+COPY . .
 
-# Publicar o aplicativo
-RUN dotnet publish --configuration Release --no-restore --output /app/publish
+# Build the application
+RUN dotnet publish -c Release -o out
 
-# Use uma imagem base do ASP.NET Core para criar a imagem final
-FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS final
+# Use a smaller runtime image for the final stage
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.401 AS runtime
+
+# Set the working directory
 WORKDIR /app
-COPY --from=build /app/publish .
+
+# Copy the built application from the build stage
+COPY --from=build /app/out .
+
+# Expose a port if your application listens on one (update with your port)
+EXPOSE 80
+
+# Start your application
 ENTRYPOINT ["dotnet", "EvenTech.dll"]
