@@ -15,10 +15,12 @@ namespace EvenTech.Controllers
     {
 
         private readonly IEventService _service;
+        private readonly IAuthService _auth;
 
-        public EventsController(IEventService eventService)
+        public EventsController(IEventService eventService, IAuthService auth)
         {
             _service = eventService;
+            _auth = auth;
         }
 
         [HttpGet]
@@ -36,6 +38,16 @@ namespace EvenTech.Controllers
             if (eventItem == null)
                 return NotFound();
             return Ok(eventItem);
+        }
+
+        [HttpGet("{id}/overview")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
+        public async Task<ActionResult<OverviewDto?>> GetEventOverview(uint id)
+        {
+            var idUser = await _service.GetUserIdByEvent(id) ?? 0;
+            if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
+
+            return Ok(await _service.GetEventOverview(id));
         }
 
         [HttpPost]

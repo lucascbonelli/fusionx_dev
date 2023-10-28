@@ -29,7 +29,7 @@ namespace EvenTech.Services
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) throw new Exception("Senha incorreta!");
 
-            return GenerateToken(user);
+            return $"Bearer {GenerateToken(user)}";
         }
 
         private string GenerateToken(User user)

@@ -73,5 +73,14 @@ namespace EvenTech.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateLastAccess(uint id, DateTime lastAccess)
+        {
+            var user = await _context.Users.FindAsync(id) ?? throw new Exception($"Usuário não encontrado! ({id})");
+
+            user.LastAccess = lastAccess;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

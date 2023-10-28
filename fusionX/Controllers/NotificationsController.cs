@@ -93,7 +93,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{idUser}")]
-        [Authorize(Roles = UserConstraints.Roles.User)]
+        [Authorize]
         public async Task<ActionResult<NotificationDtoGetUser>> GetNotificationsByUser(uint idUser)
         {
             if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
@@ -102,7 +102,7 @@ namespace EvenTech.Controllers
         }
 
         [HttpGet("user/{idUser}/new")]
-        [Authorize(Roles = UserConstraints.Roles.User)]
+        [Authorize]
         public async Task<ActionResult<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser)
         {
             if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
@@ -112,7 +112,7 @@ namespace EvenTech.Controllers
 
         [HttpGet("types")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<NotificationRecipientDto>>> GetAllNotificationTypes()
+        public async Task<ActionResult<IEnumerable<NotificationTypeDto>>> GetAllNotificationTypes()
         {
             return Ok(await _service.GetAllNotificationTypes());
         }
