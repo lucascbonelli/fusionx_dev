@@ -1,5 +1,4 @@
 ﻿using EvenTech.dtos;
-using EvenTech.Models;
 using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -23,41 +22,57 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> GetAll()
         {
             var eventManagers = await _service.GetAllAsync();
+            if(eventManagers is null || !eventManagers.Any())
+            {
+                return NotFound("No one was found!");
+            }
             return Ok(eventManagers);
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(uint id)
         {
-            var eventManager = await _service.GetByIdAsync(id);
-            if(eventManager == null) return NotFound();
-            return Ok(eventManager);
+            try
+            {
+                var eventManager = await _service.GetByIdAsync(id);
+                if(eventManager == null) return NotFound();
+                return Ok(eventManager);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> Create(EventManagerDtoCreate eventManagerDtoCreate)
         {
-            var createdEventManager = await _service.CreateAsync(eventManagerDtoCreate);
-            return CreatedAtAction(nameof(GetById), new { id = createdEventManager.Id }, createdEventManager);
-        }
-
-        [HttpPut("{id}")]
-        [Authorize(Roles = UserConstraints.Roles.Company)]
-        public async Task<IActionResult> Update(int id, EventManager eventManager)
-        {
-            if(id != eventManager.Id) return BadRequest();
-            await _service.UpdateAsync(eventManager);
-            return NoContent();
+            try
+            {
+                var createdEventManager = await _service.CreateAsync(eventManagerDtoCreate);
+                return CreatedAtAction(nameof(GetById), new { id = createdEventManager.Id }, createdEventManager);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(uint id)
         {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                await _service.DeleteAsync(id);
+                return NoContent();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

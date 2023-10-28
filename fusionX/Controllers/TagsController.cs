@@ -29,49 +29,78 @@ namespace EvenTech.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetTagById(uint id)
         {
-            var tag = await _service.GetTagByIdAsync(id);
-            if (tag == null)
+            try
             {
-                return NotFound();
+                var tag = await _service.GetTagByIdAsync(id);
+                if(tag == null) return NotFound();
+                return Ok(tag);
             }
-            return Ok(tag);
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> CreateTag(TagDtoCreate tagDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var createdTag = await _service.CreateTagAsync(tagDto);
+                return CreatedAtAction(nameof(GetTagById), new { id = createdTag.Id }, createdTag);
             }
-            var createdTag = await _service.CreateTagAsync(tagDto);
-            return CreatedAtAction(nameof(GetTagById), new { id = createdTag.Id }, createdTag);
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> UpdateTag(uint id, Tag tag)
         {
-            if (id != tag.Id)
+            try
             {
-                return BadRequest();
+                if(id != tag.Id)
+                {
+                    return BadRequest();
+                }
+                var flag = await _service.UpdateTagAsync(tag);
+                if(!flag)
+                {
+                    return NotFound("Tag not found!");
+                }
+                return NoContent();
             }
-            await _service.UpdateTagAsync(tag);
-            return NoContent();
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = UserConstraints.Roles.Admin + "," + UserConstraints.Roles.Company)]
         public async Task<IActionResult> DeleteTag(uint id)
         {
-            var tag = await _service.GetTagByIdAsync(id);
-            if (tag == null)
+            try
             {
-                return NotFound();
+                var tag = await _service.GetTagByIdAsync(id);
+                if(tag == null)
+                {
+                    return NotFound();
+                }
+                await _service.DeleteTagAsync(id);
+                return NoContent();
             }
-            await _service.DeleteTagAsync(id);
-            return NoContent();
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
