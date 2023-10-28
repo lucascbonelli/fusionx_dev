@@ -128,7 +128,6 @@ namespace EvenTech.Services
                 .Include(n => n.Feedbacks)
                 .ToListAsync();
 
-            var notificationIdx = 0u;
             var overviewItems = new List<OverviewItemDto>();
             // Loop notifications
             foreach (var notification in notifications)
@@ -140,7 +139,7 @@ namespace EvenTech.Services
                 var type = NotificationConstraints.Types.FirstOrDefault(nt => nt.Id == notification.Type);
                 overviewItems.Add(new OverviewItemDto
                 {
-                    Id = ++notificationIdx,
+                    Id = notification.Id,
                     Title = notification.Title,
                     Count = (notification.Feedbacks is null) ? 0 : notification.Feedbacks.Count,
                     Type = (type is null) ? null : new NotificationTypeDto(type),
