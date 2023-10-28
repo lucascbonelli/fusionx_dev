@@ -35,16 +35,23 @@ namespace EvenTech.Services
             return tag;
         }
 
-        public async Task UpdateTagAsync(Tag tag)
+        public async Task<bool> UpdateTagAsync(Tag tag)
         {
+            var dBtag = await _context.Tags.FindAsync(tag.Id);
+            if(dBtag is null)
+            {
+                return false;
+            }
+            _context.Entry(dBtag).State = EntityState.Detached;
             _context.Tags.Update(tag);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task DeleteTagAsync(uint id)
         {
             var tag = await _context.Tags.FindAsync(id);
-            if (tag != null)
+            if(tag != null)
             {
                 _context.Tags.Remove(tag);
                 await _context.SaveChangesAsync();
