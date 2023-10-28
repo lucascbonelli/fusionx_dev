@@ -12,5 +12,6 @@ namespace EvenTech.Services.Interfaces
         Task DeleteEventAsync(uint id);
 
         Task<uint?> GetUserIdByEvent(uint id);
+        Task<OverviewDto?> GetEventOverview(uint id);
     }
 }
