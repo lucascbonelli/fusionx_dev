@@ -186,25 +186,25 @@ namespace EvenTech.Services
                         .ToListAsync();
                 case 2: // Presentes
                     return await _context.Attendances
-                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == FeedbackConstraints.Status.Confirmed))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == AttendanceConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 3: // Ausentes - Todos
                     return await _context.Attendances
-                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != FeedbackConstraints.Status.Confirmed))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != AttendanceConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 4: // Ausentes - Cancelados
                     return await _context.Attendances
-                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == FeedbackConstraints.Status.Canceled))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == AttendanceConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 5: // Ausentes - Sem feedback
                     return await _context.Attendances
-                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != FeedbackConstraints.Status.Confirmed) && (a.Status != FeedbackConstraints.Status.Canceled))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != AttendanceConstraints.Status.Confirmed) && (a.Status != AttendanceConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();

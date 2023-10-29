@@ -50,7 +50,7 @@ namespace EvenTech.Services
             var attendance = await _context.Attendances.FindAsync(attendanceId)
                 ?? throw new Exception($"Attendance do not exist! ({id})");
             attendance.EventManagerId = eventManager.Id;
-            attendance.Status = FeedbackConstraints.Status.Present;
+            attendance.Status = AttendanceConstraints.Status.Present;
             await _context.SaveChangesAsync();
         }
     }
