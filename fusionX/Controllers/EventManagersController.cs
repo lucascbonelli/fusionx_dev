@@ -74,5 +74,20 @@ namespace EvenTech.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPut("{id}/approve/{attendanceId}")]
+        [Authorize(Roles = UserConstraints.Roles.Company)]
+        public async Task<IActionResult> UserApproval(uint id, uint attendanceId)
+        {
+            try
+            {
+                await _service.UserApprovalAsync(id, attendanceId);
+                return NoContent();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
