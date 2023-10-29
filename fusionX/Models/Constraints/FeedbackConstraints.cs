@@ -7,6 +7,7 @@ namespace EvenTech.Models.Constraints
             public const string Empty = "";
             public const string Confirmed = "Confirmado";
             public const string Canceled = "Cancelado";
+            public const string Present = "Presente";
         };
     }
 }
