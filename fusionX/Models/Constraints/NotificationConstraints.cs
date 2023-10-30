@@ -2,13 +2,17 @@ namespace EvenTech.Models.Constraints
 {
     public class NotificationConstraints
     {
+        public class Type
+        {
+            public static readonly NotificationType Ok            = new NotificationType() { Id = 1, Description = "OK" };
+            public static readonly NotificationType Confirm       = new NotificationType() { Id = 2, Description = "Confirmar presença" };
+            public static readonly NotificationType YesNo         = new NotificationType() { Id = 3, Description = "Sim/Não" };
+            public static readonly NotificationType FreeText      = new NotificationType() { Id = 4, Description = "Texto livre" };
+            public static readonly NotificationType LectureRating = new NotificationType() { Id = 5, Description = "Avaliação por palestra" };
+        }
         public static readonly ICollection<NotificationType> Types = new List<NotificationType>
         {
-            new NotificationType() { Id = 1, Description = "OK" },
-            new NotificationType() { Id = 2, Description = "Confirmar presença" },
-            new NotificationType() { Id = 3, Description = "Sim/Não" },
-            new NotificationType() { Id = 4, Description = "Texto livre" },
-            new NotificationType() { Id = 5, Description = "Avaliação por palestra" },
+            Type.Ok, Type.Confirm, Type.YesNo, Type.FreeText, Type.LectureRating
         };
         public static readonly int[] OverviewTypeIds = { 3, 4, 5 };
 
