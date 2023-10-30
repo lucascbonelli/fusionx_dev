@@ -35,7 +35,7 @@ namespace EvenTech.Controllers
         public async Task<IActionResult> GetEventById(uint id)
         {
             var eventItem = await _service.GetEventByIdAsync(id);
-            if (eventItem == null)
+            if(eventItem == null)
                 return NotFound();
             return Ok(eventItem);
         }
@@ -45,7 +45,8 @@ namespace EvenTech.Controllers
         public async Task<ActionResult<OverviewDto?>> GetEventOverview(uint id)
         {
             var idUser = await _service.GetUserIdByEvent(id) ?? 0;
-            if (!_auth.HasAccessToUser(HttpContext, idUser)) return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
+            if(!_auth.HasAccessToUser(HttpContext, idUser))
+                return Unauthorized($"Acesso ao usuário {idUser} foi negado.");
 
             return Ok(await _service.GetEventOverview(id));
         }
@@ -62,21 +63,21 @@ namespace EvenTech.Controllers
         [Authorize(Roles = UserConstraints.Roles.Company)]
         public async Task<IActionResult> UpdateEvent(uint id, EventDtoUpdate eventItem)
         {
-            if (id != eventItem.Id)
+            if(id != eventItem.Id)
                 return BadRequest();
 
             var existingEvent = await _service.GetEventByIdAsync(id);
-            if (existingEvent == null)
+            if(existingEvent == null)
                 return NotFound();
 
             var claimValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(claimValue))
+            if(string.IsNullOrEmpty(claimValue))
                 return BadRequest("User identifier not found.");
 
-            if (!uint.TryParse(claimValue, out var currentUserId))
+            if(!uint.TryParse(claimValue, out var currentUserId))
                 return BadRequest("Invalid user identifier format.");
 
-            if (existingEvent.UserId != currentUserId)
+            if(existingEvent.UserId != currentUserId)
                 return Forbid("You don't have permission to update this event.");
 
             await _service.UpdateEventAsync(id, eventItem);

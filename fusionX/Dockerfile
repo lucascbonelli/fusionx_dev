@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 7129
+RUN apt-get update && apt-get install -y net-tools
 
 ENV ASPNETCORE_URLS=http://+:7129
 

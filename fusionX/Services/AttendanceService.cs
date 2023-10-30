@@ -85,7 +85,7 @@ namespace EvenTech.Services
         public async Task<int> GetTotalConfirmedAttendances(uint eventId)
         {
             var totalConfirmedAttendances = await _context.Attendances
-                .Where(a => a.SessionId == eventId && a.Status == FeedbackConstraints.Status.Confirmed)
+                .Where(a => a.SessionId == eventId && a.Status == AttendanceConstraints.Status.Confirmed)
                 .CountAsync();
 
             return totalConfirmedAttendances;
