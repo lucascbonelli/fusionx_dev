@@ -1,7 +1,10 @@
 ﻿using EvenTech.Data;
 using EvenTech.Dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace EvenTech.Services
 {
@@ -46,6 +49,21 @@ namespace EvenTech.Services
             feedback.Response = request.Response;
 
             await _context.SaveChangesAsync();
+
+            var notification = await _context.Notifications.FindAsync(feedback.NotificationId);
+            if ((notification != null) && (notification.Type == NotificationConstraints.Type.Confirm.Id))
+            {
+                var attendance = await _context.Attendances.Include(a => a.Session)
+                    .FirstOrDefaultAsync(a => (a.UserId == feedback.UserId) && ((a.Session == null) || (a.Session.EventId == notification.EventId)));
+
+                var response = JsonConvert.DeserializeObject<JToken>(feedback.Response);
+
+                if ((attendance != null) && (attendance.Status != AttendanceConstraints.Status.Present) && (response != null))
+                {
+                    attendance.Status = ((response["confirm"] != null) && (response.Value<double>("confirm") == 1)) ?
+                        AttendanceConstraints.Status.Confirmed : AttendanceConstraints.Status.Canceled;
+                }
+            }
         }
 
         public async Task DeleteFeedback(uint id)
