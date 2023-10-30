@@ -1,13 +1,15 @@
-﻿using EvenTech.Models;
+﻿using EvenTech.dtos;
+using EvenTech.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EvenTech.Services.Interfaces
 {
     public interface IEventManagerService
     {
         Task<IEnumerable<EventManager>> GetAllAsync();
-        Task<EventManager> GetByIdAsync(int id);
-        Task<EventManager> CreateAsync(EventManager eventManager);
-        Task UpdateAsync(EventManager eventManager);
-        Task DeleteAsync(int id);
+        Task<EventManager?> GetByIdAsync(uint id);
+        Task<EventManager> CreateAsync(EventManagerDtoCreate eventManagerDtoCreate);
+        Task DeleteAsync(uint id);
+        Task UserApprovalAsync(uint id, uint attendanceId);
     }
 }

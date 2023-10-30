@@ -10,5 +10,6 @@ namespace EvenTech.Services.Interfaces
         Task UpdateUser(uint id, UserDtoUpdate request);
 
         Task<UserDto?> GetUserByEmail(string email);
+        Task UpdateLastAccess(uint id, DateTime lastAccess);
     }
 }

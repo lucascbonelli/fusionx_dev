@@ -74,7 +74,7 @@ namespace EvenTech.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.Notification).WithMany()
+                .HasOne(f => f.Notification).WithMany(n => n.Feedbacks)
                 .HasForeignKey(f => f.NotificationId)
                 .OnDelete(DeleteBehavior.Cascade);
 

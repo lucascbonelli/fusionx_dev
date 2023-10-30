@@ -8,6 +8,7 @@ namespace EvenTech.Dtos
         public string Email { get; set; } = string.Empty;
         public bool IsEmailConfirmed { get; set; }
         public string Name { get; set; } = string.Empty;
+        public DateTime LastAccess { get; set; }
         public bool Verified { get; set; }
         public string Role { get; set; } = string.Empty;
 
@@ -19,6 +20,7 @@ namespace EvenTech.Dtos
             Email = user.Email;
             IsEmailConfirmed = user.IsEmailConfirmed;
             Name = user.Name;
+            LastAccess = user.LastAccess;
             Verified = (user.VerificationDate != null);
             Role = user.Role;
         }

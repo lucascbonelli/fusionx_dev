@@ -1,6 +1,7 @@
 ﻿using EvenTech.Data;
 using EvenTech.dtos;
 using EvenTech.Models;
+using EvenTech.Models.Constraints;
 using EvenTech.Services.Interfaces;
 
 namespace EvenTech.Services
@@ -84,7 +85,7 @@ namespace EvenTech.Services
         public async Task<int> GetTotalConfirmedAttendances(uint eventId)
         {
             var totalConfirmedAttendances = await _context.Attendances
-                .Where(a => a.SessionId == eventId && a.Status == "Confirmado")
+                .Where(a => a.SessionId == eventId && a.Status == AttendanceConstraints.Status.Confirmed)
                 .CountAsync();
 
             return totalConfirmedAttendances;

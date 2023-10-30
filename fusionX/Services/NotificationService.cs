@@ -11,11 +11,13 @@ namespace EvenTech.Services
     {
         private readonly DataContext _context;
         private readonly IFeedbackService _feedback;
+        private readonly IUserService _user;
 
-        public NotificationService(DataContext context, IFeedbackService feedback)
+        public NotificationService(DataContext context, IFeedbackService feedback, IUserService user)
         {
             _context = context;
             _feedback = feedback;
+            _user = user;
         }
 
         public async Task<NotificationDto?> GetNotificationByIdAsync(uint id)
@@ -32,6 +34,7 @@ namespace EvenTech.Services
             {
                 Recipient = request.Recipient,
                 Type = request.Type,
+                Title = request.Title,
                 Description = request.Description,
                 SendDate = request.SendDate,
                 EventId = request.EventId,
@@ -48,6 +51,7 @@ namespace EvenTech.Services
 
             model.Recipient = request.Recipient;
             model.Type = request.Type;
+            model.Title = request.Title;
             model.Description = request.Description;
             model.SendDate = request.SendDate;
 
@@ -83,35 +87,49 @@ namespace EvenTech.Services
         {
             await UpdateFeedback(idUser);
 
-            return await _context.Feedbacks
+            var lastAccess = DateTime.Now;
+            var user = await _user.GetUserById(idUser);
+            if (user == null) return Enumerable.Empty<NotificationDtoGetUser>();
+
+            var feedbacks = await _context.Feedbacks
                 .Where(f => f.UserId == idUser)
                 .Include(f => f.Notification)
                 .Select(f => f.Notification).OfType<Notification>()
-                .Select(n => new NotificationDtoGetUser(n))
+                .Select(n => new NotificationDtoGetUser(n, user.LastAccess))
                 .ToListAsync();
+
+            await _user.UpdateLastAccess(idUser, lastAccess);
+
+            return feedbacks;
         }
 
         public async Task<IEnumerable<NotificationDtoGetUser>> GetUnreadNotifications(uint idUser)
         {
             await UpdateFeedback(idUser);
 
-            return await _context.Feedbacks
-                .Where(f => f.UserId == idUser)
-                .Include(f => f.User)
-                .Where(f => f.Date >= (f.User == null ? f.Date : f.User.LastAccess))
+            var lastAccess = DateTime.Now;
+            var user = await _user.GetUserById(idUser);
+            if (user == null) return Enumerable.Empty<NotificationDtoGetUser>();
+
+            var feedbacks = await _context.Feedbacks
+                .Where(f => (f.UserId == idUser) && f.Date >= user.LastAccess)
                 .Include(f => f.Notification)
                 .Select(f => f.Notification).OfType<Notification>()
-                .Select(n => new NotificationDtoGetUser(n))
+                .Select(n => new NotificationDtoGetUser(n, user.LastAccess))
                 .ToListAsync();
+
+            await _user.UpdateLastAccess(idUser, lastAccess);
+
+            return feedbacks;
         }
 
         private async Task UpdateFeedback(uint idUser)
         {
             var events = await _context.Attendances
-                .Include(a => a.Session)
                 .Where(a => a.UserId == idUser)
+                .Include(a => a.Session)
+                .ThenInclude(s => s!.Event)
                 .Select(a => a.Session).OfType<Session>()
-                .Include(s => s.Event)
                 .Select(s => s.Event).OfType<Event>()
                 .Distinct().ToListAsync();
 
@@ -121,28 +139,31 @@ namespace EvenTech.Services
                 var initTime = DateTime.Now;
 
                 var notifications = await _context.Notifications
-                    .Where(n => (n.EventId == @event.Id) && (n.SendDate >= @event.LastNotify))
+                    .Where(n => (n.EventId == @event.Id) && (n.SendDate.CompareTo(@event.LastNotify) >= 0))
                     .ToListAsync();
 
-                // Update event
-                @event.LastNotify = initTime;
-                await _context.SaveChangesAsync();
-
-                // Loop notifications
-                foreach (var notification in notifications)
+                if (notifications.Any())
                 {
-                    var userIds = await GetUsersByRecipient(notification.EventId, notification.Recipient);
+                    // Update event
+                    @event.LastNotify = initTime;
+                    await _context.SaveChangesAsync();
 
-                    // Loop users
-                    foreach (var userId in userIds)
+                    // Loop notifications
+                    foreach (var notification in notifications)
                     {
-                        // Create feedback
-                        await _feedback.CreateFeedback(new FeedbackDto
+                        var userIds = await GetUsersByRecipient(notification.EventId, notification.Recipient);
+
+                        // Loop users
+                        foreach (var userId in userIds)
                         {
-                            Date = notification.SendDate,
-                            NotificationId = notification.Id,
-                            UserId = userId,
-                        });
+                            // Create feedback
+                            await _feedback.CreateFeedback(new FeedbackDto
+                            {
+                                Date = notification.SendDate,
+                                NotificationId = notification.Id,
+                                UserId = userId,
+                            });
+                        }
                     }
                 }
             }
@@ -150,40 +171,40 @@ namespace EvenTech.Services
 
         private async Task<List<uint>> GetUsersByRecipient(uint idEvent, int recipient)
         {
+            var sessionIds = await _context.Sessions
+                .Where(s => s.EventId == idEvent)
+                .Select(s => s.Id)
+                .ToListAsync();
+
             switch (recipient)
             {
                 case 1: // Todos
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent))
+                        .Where(a => sessionIds.Contains(a.SessionId))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 2: // Presentes
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Confirmado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == AttendanceConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 3: // Ausentes - Todos
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != AttendanceConstraints.Status.Confirmed))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 4: // Ausentes - Cancelados
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status == "Cancelado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status == AttendanceConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();
                 case 5: // Ausentes - Sem feedback
                     return await _context.Attendances
-                        .Include(a => a.Session)
-                        .Where(a => (a.Session != null) && (a.Session.EventId == idEvent) && (a.Status != "Confirmado") && (a.Status != "Cancelado"))
+                        .Where(a => sessionIds.Contains(a.SessionId) && (a.Status != AttendanceConstraints.Status.Confirmed) && (a.Status != AttendanceConstraints.Status.Canceled))
                         .Select(a => a.UserId)
                         .Distinct()
                         .ToListAsync();

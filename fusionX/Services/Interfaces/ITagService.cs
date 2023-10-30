@@ -8,7 +8,7 @@ namespace EvenTech.Services.Interfaces
         Task<IEnumerable<Tag>> GetAllTagsAsync();
         Task<Tag?> GetTagByIdAsync(uint id);
         Task<Tag> CreateTagAsync(TagDtoCreate tagDto);
-        Task UpdateTagAsync(Tag tag);
+        Task<bool> UpdateTagAsync(Tag tag);
         Task DeleteTagAsync(uint id);
     }
 }
